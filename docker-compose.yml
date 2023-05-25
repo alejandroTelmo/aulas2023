@@ -1,29 +1,29 @@
 version: "3.1"
 
 services:
-    db:
+    postgres:
         image: postgres:14-alpine
         environment:
-            POSTGRES_DB: "${DB_DATABASE}"
-            POSTGRES_USER: "${DB_USER}"
-            POSTGRES_PASSWORD: "${DB_PASSWORD}"
+            POSTGRES_PASSWORD: ${DATABASE_PASS}
+            POSTGRES_USER: ${DATABASE_USER}
+            POSTGRES_DB: ${DATABASE_NAME}
         volumes:
-            - ./data/pgdata:/var/lib/postgresql/data
+            - ./data/postgres:/var/lib/postgresql/data:delegated
         ports:
             - '5432:5432'
 
     backend:
         image: yiisoftware/yii2-php:7.1-apache
         volumes: 
-            - ./backend/composer/cache:/root/.composer/cache
-            - ./backend/basic:/app
+            - ./backend/composer/cache:/root/.composer/cache:delegated
+            - ./backend/basic:/app:delegated
         environment: 
-            DB_DATABASE: "${DB_DATABASE}"
-            DB_PASSWORD: "${DB_PASSWORD}"
-            DB_USER: "${DB_USER}"
-            DB_HOST: "${DB_HOST}"
-            PRODUCCION: "${PRODUCCION}"
-            PHP_USER_ID: "${PHP_USER_ID}"
+            DATABASE_NAME: ${DATABASE_NAME}
+            DATABASE_PASS: ${DATABASE_PASS}
+            DATABASE_USER: ${DATABASE_USER}
+            DATABASE_HOST: postgres
+            PHP_USER_ID: ${USER_UNIX_ID}
+            ENABLE_GIT: 1
         ports: 
             - 8000:80
 
