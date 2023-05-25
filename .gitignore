@@ -1,3 +1,4 @@
 data/*
 .env
 backend/composer/*
+frontend/node_modules/*
