@@ -1,12 +1,32 @@
 <template>
-  <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
-  </div>
+  <v-app>
+    <MainMenu> </MainMenu>
+    <MainBar></MainBar>
+    <v-main>
+      <v-container fluid> <router-view /> </v-container>
+    </v-main>
+  </v-app>
 </template>
+
+<script>
+import MainMenu from "./components/MainMenu.vue";
+import MainBar from "./components/MainBar.vue";
+
+export default {
+  name: "App",
+
+  components: {
+    MainMenu,
+    MainBar,
+  },
+
+  data: () => ({
+    //
+    showMenu: true,
+    items: [{ title: "Home", icon: "mdi-view-dashboard" }],
+  }),
+};
+</script>
 
 <style lang="scss">
 #app {
