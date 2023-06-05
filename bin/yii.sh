@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker-compose exec backend yii $@
+docker compose exec backend yii $@
