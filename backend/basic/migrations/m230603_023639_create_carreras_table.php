@@ -12,7 +12,7 @@ class m230603_023639_create_carreras_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%carreras}}', [
+        $this->createTable('{{%carrera}}', [
             'id' => $this->primaryKey(),
             'nombre' => $this->string(50),
         ]);
@@ -23,6 +23,6 @@ class m230603_023639_create_carreras_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%carreras}}');
+        $this->dropTable('{{%carrera}}');
     }
 }

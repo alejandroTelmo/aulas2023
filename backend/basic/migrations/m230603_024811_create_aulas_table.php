@@ -12,7 +12,7 @@ class m230603_024811_create_aulas_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%aulas}}', [
+        $this->createTable('{{%aula}}', [
             'id' => $this->primaryKey(),
             'descripcion' => $this->string(),
             'ubicacion' => $this->string(50),
@@ -28,6 +28,6 @@ class m230603_024811_create_aulas_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%aulas}}');
+        $this->dropTable('{{%aula}}');
     }
 }
