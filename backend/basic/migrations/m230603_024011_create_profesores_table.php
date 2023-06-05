@@ -12,7 +12,7 @@ class m230603_024011_create_profesores_table extends Migration
      */
     public function safeUp()
     {
-        $this->createTable('{{%profesores}}', [
+        $this->createTable('{{%profesor}}', [
             'id' => $this->primaryKey(),
             'nombre' => $this->string(60),
             'apellido' => $this->string(50),
@@ -25,6 +25,6 @@ class m230603_024011_create_profesores_table extends Migration
      */
     public function safeDown()
     {
-        $this->dropTable('{{%profesores}}');
+        $this->dropTable('{{%profesor}}');
     }
 }
