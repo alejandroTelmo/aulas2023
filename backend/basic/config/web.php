@@ -56,6 +56,7 @@ $config = [
                 'controller' => [
                                 'apiv1/horariomateria',
                                 'apiv1/aula',
+                                'apiv1/reservaaula'
                                 ]
                 ]
             ],
