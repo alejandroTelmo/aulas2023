@@ -8,7 +8,7 @@
           v-model="nuevoNombre"
           label="Nombre"
           :rules="nombreRules"
-          required
+            required
         ></v-text-field>
       </v-card-text>
       <v-card-actions>

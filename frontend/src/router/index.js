@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import AulasHome from "../components/AulasHome";
 import AulasAbout from "../components/AulasAbout";
 import ListadoCarreras from "../components/ListadoCarreras"
+import ListaAulasReservadas from "../components/ListaAulasReservadas.vue"
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,11 @@ const routes = [
     path: "/carreras",
     name: "ListadoCarreras",
     component: ListadoCarreras,
+  },
+  {
+    path: "/reservaaula",
+    name: "ListaAulasReservadas",
+    component: ListaAulasReservadas,
   },
 ];
 

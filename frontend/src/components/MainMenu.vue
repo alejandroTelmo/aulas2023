@@ -40,6 +40,7 @@ export default {
       { title: "Home", icon: "mdi-view-dashboard", to: "/home" },
       { title: "About", icon: "mdi-view-dashboard", to: "/about" },
       { title: "Carreras", icon: "mdi-view-dashboard", to: "/carreras" },
+      { title: "Reservas", icon: "mdi-view-dashboard", to: "/reservaaula" },
     ],
   }),
   mounted() {},
