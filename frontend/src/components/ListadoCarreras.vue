@@ -26,7 +26,7 @@
       </template>
     </v-data-table>
 
-    <v-dialog v-model="mostrarAbmCarreras" max-width="500px">
+    <v-dialog v-model="mostrarAbmCarreras" max-width="500px" persistent>
       <AbmCarreras
         :carrera="carreraSeleccionada"
         :editar="editar"
@@ -58,7 +58,10 @@ export default {
       },
       listadoCarreras: [],
       mostrarAbmCarreras: false,
-      carreraSeleccionada: {},
+      carreraSeleccionada: {
+        id:"",
+        nombre:"",
+      },
       editar: false,
     };
   },
@@ -77,7 +80,6 @@ export default {
       if (sortDesc[0]) {
         sortMode = "-";
       }
-      console.log(sortDesc, sortMode);
       var that = this;
       this.axios
         .get(
@@ -103,11 +105,13 @@ export default {
     },
     agregarCarrera() {
       this.editar = false;
-      this.carreraSeleccionada = {};
+      this.carreraSeleccionada = {
+        id: "",
+        nombre: "",
+      };
       this.mostrarFormularioAbmCarreras();
     },
     editarCarrera(carrera) {
-      console.log(carrera.nombre);
       this.carreraSeleccionada = {
         id: carrera.id,
         nombre: carrera.nombre,
@@ -136,9 +140,9 @@ export default {
         });
     },
     cancelarAbmCarrera() {
-      this.mostrarAbmCarreras = false;
       this.carreraSeleccionada.nombre = "";
       this.carreraSeleccionada.id = "";
+      this.mostrarAbmCarreras = false;
     },
   },
 };
