@@ -29,6 +29,8 @@ const routes = [
     path: "/aulas",
     name: "ListadoAulas",
     component: ListadoAulas,
+  },
+  {
     path: "/reservaaula",
     name: "ListaAulasReservadas",
     component: ListaAulasReservadas,
