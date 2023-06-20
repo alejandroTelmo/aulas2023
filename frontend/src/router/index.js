@@ -28,6 +28,8 @@ const routes = [
     path: "/reservaaula",
     name: "ListaAulasReservadas",
     component: ListaAulasReservadas,
+  },
+  {
     path: "/horarioMaterias",
     name: "ListadoHorarioMaterias",
     component: ListadoHorarioMaterias,
