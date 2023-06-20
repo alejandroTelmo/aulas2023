@@ -4,6 +4,7 @@ import AulasHome from "../components/AulasHome";
 import AulasAbout from "../components/AulasAbout";
 import ListadoCarreras from "../components/ListadoCarreras"
 import ListaAulasReservadas from "../components/ListaAulasReservadas.vue"
+import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias"
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,9 @@ const routes = [
     path: "/reservaaula",
     name: "ListaAulasReservadas",
     component: ListaAulasReservadas,
+    path: "/horarioMaterias",
+    name: "ListadoHorarioMaterias",
+    component: ListadoHorarioMaterias,
   },
 ];
 
