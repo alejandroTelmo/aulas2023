@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid" @submit.prevent>
+  <v-form ref="form" v-model="valid" @submit.prevent>
     <v-card>
       <v-card-title>Agregar Carrera</v-card-title>
       <v-card-text>
@@ -8,11 +8,13 @@
           v-model="nuevoNombre"
           label="Nombre"
           :rules="nombreRules"
-          required
+            required
         ></v-text-field>
       </v-card-text>
       <v-card-actions>
-        <v-btn color="primary" @click="submit" :disabled="!valid">Guardar</v-btn>
+        <v-btn color="primary" @click="submit" :disabled="!valid"
+          >Guardar</v-btn
+        >
         <v-btn color="secondary" @click="cancelar">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
@@ -20,7 +22,6 @@
 </template>
 
 <script>
-/* import { required } from "vuelidate/lib/validators"; */
 export default {
   props: {
     carrera: {
@@ -32,29 +33,25 @@ export default {
       default: false,
     },
   },
-  /*   validations: {
-    nuevoNombre: { required },
-  }, */
   data() {
     return {
       valid: false,
       nuevoNombre: "",
-      carreraLocal: null,
-      nombreRules: [
-        v => !!v || 'El nombre es requerido',
-      ],
+      nombreRules: [(v) => !!v || "El nombre es requerido"],
     };
   },
   watch: {
     carrera: {
       handler(nuevoValor) {
         this.nuevoNombre = nuevoValor.nombre;
+        if (!this.editar){
+          this.resetValidationForAbm();
+        }
       },
     },
   },
   methods: {
     submit() {
-      console.log(this.editar);
       if (this.editar) {
         this.editarCarrera();
       } else {
@@ -65,7 +62,6 @@ export default {
       const data = {
         nombre: this.nuevoNombre,
       };
-      console.log(data);
       var that = this;
       this.axios
         .post("/apiv1/carrera", data)
@@ -77,6 +73,7 @@ export default {
           console.log(error);
         })
         .then(function () {
+          that.resetValidationForAbm();
           that.$emit("guardar");
         });
     },
@@ -89,27 +86,27 @@ export default {
         .patch(`/apiv1/carrera/${this.carrera.id}`, data)
         .then(function (response) {
           console.log(response);
-          /* alert("Registro Guardado!!"); */
-          that.nuevoNombre = "";
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
+          that.resetValidationForAbm();
           that.$emit("guardar");
         });
     },
     cancelar() {
+      this.resetValidationForAbm();
       this.$emit("cancelar");
+    },
+    resetValidationForAbm() {
+      this.$refs.form.resetValidation();
     },
   },
   created() {
-    this.carreraLocal = this.carrera;
-    console.log(this.carreraLocal.id, this.carreraLocal.nombre);
-    this.nuevoNombre = this.carreraLocal.nombre;
+    if (this.carrera) {
+      this.nuevoNombre = this.carrera.nombre;
+    }
   },
-  /*   beforeDestroy() {
-    this.nuevoNombre = "";
-  }, */
 };
 </script>
