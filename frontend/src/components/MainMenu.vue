@@ -40,6 +40,7 @@ export default {
       { title: "Home", icon: "mdi-view-dashboard", to: "/home" },
       { title: "About", icon: "mdi-view-dashboard", to: "/about" },
       { title: "Carreras", icon: "mdi-view-dashboard", to: "/carreras" },
+      { title: "Aulas", icon: "mdi-view-dashboard", to: "/aulas" },
     ],
   }),
   mounted() {},
