@@ -7,6 +7,10 @@ import ListadoAulas from "../components/ListadoAulas"
 import ListaAulasReservadas from "../components/ListaAulasReservadas.vue"
 import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias"
 
+import ListadoCarreras from "../components/ListadoCarreras";
+import ListaAulasReservadas from "../components/ListaAulasReservadas.vue";
+import ListadoMaterias from "../components/ListadoMaterias.vue";
+import AbmMateria from "../components/AbmMateria.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -39,6 +43,16 @@ const routes = [
     path: "/horarioMaterias",
     name: "ListadoHorarioMaterias",
     component: ListadoHorarioMaterias,
+  },
+  {
+    path: "/materias",
+    name: "ListadoMaterias",
+    component: ListadoMaterias,
+  },
+  {
+    path: "/abm",
+    name: "AbmMateria",
+    component: AbmMateria,
   },
 ];
 
