@@ -24,11 +24,19 @@
          
             required
         ></v-text-field>
-        <v-select
+      <!-- <v-select
           label="Seleccionar Profesor"
           v-model="selectedProfesor"
           :items="profesores"
         ></v-select>
+        --> 
+        <v-select
+          label="Seleccionar Profesor"
+          v-model="selectedProfesorId"
+          :items="profesores"
+          item-text="apellido"
+          item-value="id"
+          ></v-select>
         <v-select
           label="Seleccionar Carrera"
           v-model="selectedCarrera"
@@ -72,6 +80,7 @@ export default {
       nombreMateria: "",
       profesores:[],
       selectedProfesor:null,
+      selectedProfesorId: null,
       carreras:[],
       selectedCarrera:null,
       id_carrera:"",
@@ -106,7 +115,7 @@ export default {
         alumnos:this.alumnos,
         cant_alumnos:this.cant_alumnos,
         id_carrera:this.id_carrera,
-        id_profesor:this.id_profesor,
+        id_profesor:this.selectedProfesorId,
       };
       console.log(data);
      var that=this;
@@ -114,7 +123,11 @@ export default {
         .post("/apiv1/materia", data)
         .then(function (response) {
           console.log(response);
-          that.nuevoNombre = "";
+          that.nombreMateria = "";
+          that.alumnos="";
+          that.cant_alumnos="";
+          that.selectedCarrera=null;
+          that.selectedProfesor=null
         })
         .catch(function (error) {
           console.log(error);
@@ -153,7 +166,10 @@ export default {
       this.axios.get('/apiv1/profesor')
         .then(response => {
           console.log(response.data);
-          that.profesores = response.data.map(profesor => profesor.apellido);
+          that.profesores = response.data.map(profesor => {
+            return { id: profesor.id, apellido: profesor.apellido };
+          });
+          
         })
         .catch(error => {
           console.error(error);

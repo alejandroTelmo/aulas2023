@@ -22,7 +22,7 @@
         <v-icon small class="mr-2" @click="editarMateria(item)">
           mdi-pencil
         </v-icon>
-        <v-icon small @click="eliminarMateria(item)"> mdi-delete </v-icon>
+        <v-icon small @click="eliminarMateria(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
 
@@ -39,6 +39,8 @@
 
 <script>
 import AbmMateria from "./AbmMateria.vue";
+import axios from "axios"; // Importa axios si no lo has hecho
+
 export default {
   components: {
     AbmMateria,
@@ -57,8 +59,8 @@ export default {
         { text: "Profesor", value: "profesor" },
         { text: "Acciones", value: "actions", sortable: false },
       ],
-      footerProps:{
-        'items-per-page-options': [10, 25, 50]
+      footerProps: {
+        "items-per-page-options": [10, 25, 50],
       },
       listadoMaterias: [],
       mostrarAbmMaterias: false,
@@ -81,25 +83,53 @@ export default {
       if (sortDesc[0]) {
         sortMode = "-";
       }
-      console.log(sortDesc, sortMode);
-      var that = this;
+      const that = this;
+
       this.axios
         .get(
           `/apiv1/materia?per-page=${itemsPerPage}&page=${page}&sort=${sortMode}${sortBy}`
         )
         .then(function (response) {
-          if (response.status === 200) {            
-            that.listadoMaterias = response.data;
-            that.cantTotalListadoMaterias = parseInt(
-              response.headers["x-pagination-total-count"]
-            );
+          if (response.status === 200) {
+            const materias = response.data;
+            const promises = materias.map((materia) => {
+              const carreraPromise = that.axios.get(
+                `/apiv1/carrera/${materia.id_carrera}`
+              );
+              console.log(carreraPromise);
+              const profesorPromise = that.axios.get(
+                `/apiv1/profesor/${materia.id_profesor}`
+              );
+              console.log(profesorPromise);
+              return Promise.all([carreraPromise, profesorPromise]);
+            });
+
+            Promise.all(promises)
+              .then((results) => {
+                const updatedMaterias = results.map(
+                  ([carreraResponse, profesorResponse], index) => {
+                    const materia = materias[index];
+                    materia.carrera = carreraResponse.data.nombre;
+                    materia.profesor = `${profesorResponse.data.nombre} ${profesorResponse.data.apellido}`;
+                    return materia;
+                  }
+                );
+
+                that.listadoMaterias = updatedMaterias;
+                that.cantTotalListadoMaterias = parseInt(
+                  response.headers["x-pagination-total-count"]
+                );
+              })
+              .catch((error) => {
+                console.log(error);
+              })
+              .finally(() => {
+                that.loading = false;
+              });
           }
         })
         .catch(function (error) {
           console.log(error);
-        })
-        .then(function () {
-          that.loading = false;
         });
     },
     mostrarFormularioAbmMaterias() {
@@ -125,7 +155,7 @@ export default {
       this.obtenerListadoDeApi();
     },
     eliminarMateria(materia) {
-      var that = this;
+      const that = this;
       this.axios
         .delete(`/apiv1/materia/${materia.id}`)
         .then(function (response) {
