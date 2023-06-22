@@ -6,11 +6,9 @@ import ListadoCarreras from "../components/ListadoCarreras"
 import ListadoAulas from "../components/ListadoAulas"
 import ListaAulasReservadas from "../components/ListaAulasReservadas.vue"
 import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias"
+import ListadoMaterias from "../components/ListadoMaterias"
 
-import ListadoCarreras from "../components/ListadoCarreras";
-import ListaAulasReservadas from "../components/ListaAulasReservadas.vue";
-import ListadoMaterias from "../components/ListadoMaterias.vue";
-import AbmMateria from "../components/AbmMateria.vue";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -49,11 +47,7 @@ const routes = [
     name: "ListadoMaterias",
     component: ListadoMaterias,
   },
-  {
-    path: "/abm",
-    name: "AbmMateria",
-    component: AbmMateria,
-  },
+
 ];
 
 const router = new VueRouter({
