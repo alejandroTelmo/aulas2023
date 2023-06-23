@@ -171,7 +171,7 @@
       </v-container>
       <v-divider></v-divider>
       <v-card-actions>
-        <v-btn color="primary" @click="submit" :disabled="!valid"
+        <v-btn color="primary" @click="submit" :disabled="!validForm"
           >Guardar</v-btn
         >
         <v-btn color="secondary" @click="cancelar">Cancelar</v-btn>
@@ -274,6 +274,17 @@ export default {
       }
     },
   },
+  computed: {
+    validForm(){
+      if (this.valid && this.showDataTable){
+        console.log ('true');
+        return true;
+      } else {
+        console.log ('false');
+        return false;
+      }
+    }
+  },
   methods: {
     agregarDia() {
       if (this.dia) {
@@ -320,60 +331,36 @@ export default {
     submit() {
       this.guardarCarrera();
     },
-    /*     guardarCarrera() {
+    guardarCarrera() {
+      let data = [];
       Object.values(this.horarioDiasSemana).forEach((dia) => {
         if (dia.checked === true) {
           let fechas = this.obtenerFechas(dia.utcDay);
           fechas.forEach((fecha) => {
-            let data = {
+            data.push({
               id_materia: this.selectedItem,
               fh_desde: `${fecha} ${dia.horaDesde}`,
               fh_hasta: `${fecha} ${dia.horaHasta}`,
               clase_virtual: dia.esVirtual,
-            };
-            this.axios
-              .post("/apiv1/horariomateria", data)
-              .then(function (response) {
-                console.log(response);
-              })
-              .catch(function (error) {
-                console.log(error);
-              })
-              .then(function () {});
+            });
+            
           });
         }
       });
-      this.resetValidationForAbm();
-      this.reiniciarValores();
-      this.$emit("guardar");
-    }, */
-    async guardarCarrera() {
-      const promises = [];
-
-      Object.values(this.horarioDiasSemana).forEach((dia) => {
-        if (dia.checked === true) {
-          let fechas = this.obtenerFechas(dia.utcDay);
-          fechas.forEach((fecha) => {
-            let data = {
-              id_materia: this.selectedItem,
-              fh_desde: `${fecha} ${dia.horaDesde}`,
-              fh_hasta: `${fecha} ${dia.horaHasta}`,
-              clase_virtual: dia.esVirtual,
-            };
-            let promise = this.axios.post("/apiv1/horariomateria", data);
-            promises.push(promise);
-          });
-        }
-      });
-
-      try {
-        await Promise.all(promises);
-        this.resetValidationForAbm();
-        this.reiniciarValores();
-        this.$emit("guardar");
-      } catch (error) {
+      var that = this;
+      this.axios
+      .post("/apiv1/horariomateria", data)
+      .then(function (response) {
+        console.log(response);
+        that.reiniciarValores();
+      })
+      .catch(function (error) {
         console.log(error);
-      }
+      })
+      .then(function () {
+        that.resetValidationForAbm();
+        that.$emit("guardar");
+      });
     },
     obtenerFechas(diaUtc) {
       const fechas = [];
