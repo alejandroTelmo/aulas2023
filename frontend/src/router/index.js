@@ -7,6 +7,8 @@ import ListadoCarreras from "../components/ListadoCarreras"
 import ListadoAulas from "../components/ListadoAulas"
 import ListaAulasReservadas from "../components/ListaAulasReservadas.vue"
 import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias"
+import ListadoMaterias from "../components/ListadoMaterias"
+
 
 import ListadoProfesor from "../components/ListadoProfesor";
 
@@ -29,6 +31,8 @@ const routes = [
     component: ListadoCarreras,
   },
 
+  
+
   {
     path: "/aulas",
     name: "ListadoAulas",
@@ -44,15 +48,17 @@ const routes = [
     name: "ListadoHorarioMaterias",
     component: ListadoHorarioMaterias,
   },
+  {
+    path: "/materias",
+    name: "ListadoMaterias",
+    component: ListadoMaterias,
+  },
 
   {  
     path: "/profesor",
     name: "ListadoProfesor",
     component: ListadoProfesor,
   }
-
-
-
 ];
 
 const router = new VueRouter({

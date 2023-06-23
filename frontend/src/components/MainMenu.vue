@@ -43,8 +43,13 @@ export default {
       { title: "Aulas", icon: "mdi-view-dashboard", to: "/aulas" },
       { title: "Reservas", icon: "mdi-view-dashboard", to: "/reservaaula" },
       { title: "Horario Materias", icon: "mdi-view-dashboard", to: "/horarioMaterias" },
-      { title: "Profesor", icon: "mdi-view-dashboard", to: "/profesor" },
 
+
+
+      { title: "Materias", icon: "mdi-view-dashboard", to: "/materias" },
+
+
+{ title: "Profesor", icon: "mdi-view-dashboard", to: "/profesor" },
     ],
   }),
   mounted() {},
