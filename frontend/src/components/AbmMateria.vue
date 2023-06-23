@@ -21,15 +21,9 @@
           @keyup.enter="submit"
           v-model="cant_alumnos"
           label="Cantidad de Alumnos"
-         
-            required
+          required
         ></v-text-field>
-      <!-- <v-select
-          label="Seleccionar Profesor"
-          v-model="selectedProfesor"
-          :items="profesores"
-        ></v-select>
-        --> 
+
         <v-select
           label="Seleccionar Profesor"
           v-model="selectedProfesorId"
@@ -39,8 +33,10 @@
           ></v-select>
         <v-select
           label="Seleccionar Carrera"
-          v-model="selectedCarrera"
+          v-model="selectedCarreraId"
           :items="carreras"
+          item-text="nombre"
+          item-value="id"
         ></v-select>
         <template>
   
@@ -67,9 +63,7 @@ export default {
       default: false,
     },
   },
-  /*   validations: {
-    nuevoNombre: { required },
-  }, */
+
   data() {
     return {
 
@@ -83,6 +77,7 @@ export default {
       selectedProfesorId: null,
       carreras:[],
       selectedCarrera:null,
+      selectedCarreraId:null,
       id_carrera:"",
       id_profesor:"",
       nombreRules: [
@@ -96,8 +91,14 @@ export default {
   watch: {
     materia: {
       handler(nuevoValor) {
-        this.nombre = nuevoValor.nombre;
+        this.id = nuevoValor.id;
+        this.nombreMateria = nuevoValor.nombre;
+        this.alumnos = nuevoValor.alumnos;
+        this.cant_alumnos = nuevoValor.cant_alumnos;
+        this.id_carrera = nuevoValor.id_carrera;
+        this.id_profesor = nuevoValor.id_profesor;
       },
+      inmediate:true,
     },
   },
   methods: {
@@ -114,7 +115,7 @@ export default {
         nombre: this.nombreMateria,
         alumnos:this.alumnos,
         cant_alumnos:this.cant_alumnos,
-        id_carrera:this.id_carrera,
+        id_carrera:this.selectedCarreraId,
         id_profesor:this.selectedProfesorId,
       };
       console.log(data);
@@ -138,12 +139,12 @@ export default {
     },
     editarMateria() {
       const data = {
-        id:this.id,
+        id:this.materia.id,
         nombre: this.nombreMateria,
         alumnos:this.alumnos,
         cant_alumnos:this.cant_alumnos,
-        id_carrera:this.id_carrera,
-        id_profesor:this.id_profesor,
+        id_carrera:this.selectedCarreraId,
+        id_profesor:this.selectedProfesorId,
 
       };
       var that = this;
@@ -151,8 +152,13 @@ export default {
         .patch(`/apiv1/materia/${this.materia.id}`, data)
         .then(function (response) {
           console.log(response);
-          /* alert("Registro Guardado!!"); */
-          that.nuevoNombre = "";
+          alert("Registro Editado con Éxito!!"); 
+          that.id = "";
+          that.nombreMateria = "";
+          that.alumnos = "";
+          that.cant_alumnos = "";
+          that.id_carrera = "";
+          that.id_profesor = "";
         })
         .catch(function (error) {
           console.log(error);
@@ -180,7 +186,9 @@ export default {
       this.axios.get('/apiv1/carrera')
         .then(response => {
           console.log(response.data);
-          that.carreras = response.data.map(carrera => carrera.nombre);
+          that.carreras = response.data.map(carrera =>{
+            return {id: carrera.id,nombre: carrera.nombre};
+          });
         })
         .catch(error => {
           console.error(error);
@@ -191,12 +199,14 @@ export default {
     },
   },
   created() {
-    this.materiaLocal = this.materia
-    this.getProfesores();
-    this.getCarreras();
+  this.nombreMateria = this.materia.nombre;
+  this.alumnos = this.materia.alumnos;
+  this.cant_alumnos = this.materia.cant_alumnos;
+  this.selectedCarreraId = this.materia.id_carrera;
+  this.selectedProfesorId = this.materia.id_profesor;
+  this.getProfesores();
+  this.getCarreras();
   },
-  /*   beforeDestroy() {
-    this.nuevoNombre = "";
-  }, */
+  
 };
 </script>

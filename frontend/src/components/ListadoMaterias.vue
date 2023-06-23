@@ -39,7 +39,7 @@
 
 <script>
 import AbmMateria from "./AbmMateria.vue";
-import axios from "axios"; // Importa axios si no lo has hecho
+//import axios from "axios"; // Importa axios si no lo has hecho
 
 export default {
   components: {
@@ -92,15 +92,17 @@ export default {
         .then(function (response) {
           if (response.status === 200) {
             const materias = response.data;
+           
             const promises = materias.map((materia) => {
+             
               const carreraPromise = that.axios.get(
                 `/apiv1/carrera/${materia.id_carrera}`
               );
-              console.log(carreraPromise);
+            
               const profesorPromise = that.axios.get(
                 `/apiv1/profesor/${materia.id_profesor}`
               );
-              console.log(profesorPromise);
+             
               return Promise.all([carreraPromise, profesorPromise]);
             });
 
@@ -141,10 +143,14 @@ export default {
       this.mostrarFormularioAbmMaterias();
     },
     editarMateria(materia) {
-      console.log(materia.nombre);
       this.materiaSeleccionada = {
         id: materia.id,
         nombre: materia.nombre,
+        alumnos:materia.alumnos,
+        cant_alumnos:materia.cant_alumnos,
+        id_carrera:materia.id_carrera,
+        id_profesor:materia.id_profesor,
+
       };
       this.editar = true;
       this.mostrarAbmMaterias = true;
