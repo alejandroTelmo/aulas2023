@@ -40,16 +40,12 @@ export default {
       { title: "Home", icon: "mdi-view-dashboard", to: "/home" },
       { title: "About", icon: "mdi-view-dashboard", to: "/about" },
       { title: "Carreras", icon: "mdi-view-dashboard", to: "/carreras" },
-      { title: "Aulas", icon: "mdi-view-dashboard", to: "/aulas" },
-      { title: "Reservas", icon: "mdi-view-dashboard", to: "/reservaaula" },
-      { title: "Horario Materias", icon: "mdi-view-dashboard", to: "/horarioMaterias" },
-
-
-
+      { title: "Profesor", icon: "mdi-view-dashboard", to: "/profesor" },
       { title: "Materias", icon: "mdi-view-dashboard", to: "/materias" },
-
-
-{ title: "Profesor", icon: "mdi-view-dashboard", to: "/profesor" },
+      { title: "Aulas", icon: "mdi-view-dashboard", to: "/aulas" },
+      { title: "Horario Materias", icon: "mdi-view-dashboard", to: "/horarioMaterias" },
+      { title: "Reservas", icon: "mdi-view-dashboard", to: "/reservaaula" },
+      { title: "Calendario", icon: "mdi-calendar-month", to: "/calendario" },
     ],
   }),
   mounted() {},
