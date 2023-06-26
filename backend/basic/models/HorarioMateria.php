@@ -12,7 +12,7 @@ use Yii;
  * @property int|null $id_reserva
  * @property string|null $fh_desde
  * @property string|null $fh_hasta
- * @property bool|null $clase_virtual
+ * @property bool $clase_virtual
  *
  * @property Materia $materia
  * @property ReservaAula $reserva
@@ -36,6 +36,7 @@ class HorarioMateria extends \yii\db\ActiveRecord
             [['id_materia', 'id_reserva'], 'default', 'value' => null],
             [['id_materia', 'id_reserva'], 'integer'],
             [['fh_desde', 'fh_hasta'], 'safe'],
+            [['clase_virtual'], 'default', 'value' => false],
             [['clase_virtual'], 'boolean'],
             [['id_materia'], 'exist', 'skipOnError' => true, 'targetClass' => Materia::class, 'targetAttribute' => ['id_materia' => 'id']],
             [['id_reserva'], 'exist', 'skipOnError' => true, 'targetClass' => ReservaAula::class, 'targetAttribute' => ['id_reserva' => 'id']],
