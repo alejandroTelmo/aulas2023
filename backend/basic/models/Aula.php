@@ -10,10 +10,10 @@ use Yii;
  * @property int $id
  * @property string|null $descripcion
  * @property string|null $ubicacion
- * @property int|null $cant_pcs
- * @property int|null $cant_proyectores
- * @property bool|null $es_climatizada
- * @property int|null $aforo
+ * @property int $cant_pcs
+ * @property int $cant_proyectores
+ * @property bool $es_climatizada
+ * @property int $aforo
  *
  * @property ReservaAula[] $reservaAulas
  */
@@ -33,11 +33,12 @@ class Aula extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['cant_pcs', 'cant_proyectores', 'aforo'], 'default', 'value' => null],
+            [['descripcion', 'ubicacion'], 'required'],
+            [['cant_pcs', 'cant_proyectores', 'aforo'], 'default', 'value' => 0],
             [['cant_pcs', 'cant_proyectores', 'aforo'], 'integer'],
+            [['es_climatizada'], 'default', 'value' => false],
             [['es_climatizada'], 'boolean'],
-            [['descripcion'], 'string', 'max' => 255],
-            [['ubicacion'], 'string', 'max' => 50],
+            [['descripcion', 'ubicacion'], 'string', 'max' => 128],
         ];
     }
 
