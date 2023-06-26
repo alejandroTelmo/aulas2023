@@ -26,6 +26,7 @@
             <v-text-field
               v-model="fechaDesde"
               label="Fecha desde:"
+              prepend-inner-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
@@ -53,6 +54,7 @@
             <v-text-field
               v-model="horaDesde"
               label="Hora desde:"
+              prepend-inner-icon="mdi-clock"
               clearable
               v-bind="attrs"
               v-on="on"
@@ -79,6 +81,7 @@
             <v-text-field
               v-model="fechaHasta"
               label="Fecha hasta:"
+              prepend-inner-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
@@ -106,6 +109,7 @@
             <v-text-field
               v-model="horaHasta"
               label="Hora hasta:"
+              prepend-inner-icon="mdi-clock"
               clearable
               v-bind="attrs"
               v-on="on"

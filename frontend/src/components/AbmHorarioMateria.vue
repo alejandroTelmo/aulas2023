@@ -28,6 +28,7 @@
             <v-text-field
               v-model="fechaDesde"
               label="Fecha inicio de cuatrimestre:"
+              prepend-inner-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
@@ -54,6 +55,7 @@
             <v-text-field
               v-model="fechaHasta"
               label="Fecha fin de cuatrimestre:"
+              prepend-inner-icon="mdi-calendar"
               readonly
               v-bind="attrs"
               v-on="on"
@@ -86,9 +88,11 @@
             >
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
-                  style="width: 120px"
+                  style="width: 140px"
                   v-model="horaDesde"
                   label="Hora Desde:"
+                  persistent-placeholder
+                  prepend-inner-icon="mdi-clock"
                   clearable
                   v-bind="attrs"
                   v-on="on"
@@ -120,6 +124,8 @@
                   style="width: 120px"
                   v-model="horaHasta"
                   label="Hora hasta:"
+                  prepend-inner-icon="mdi-clock"
+                  persistent-placeholder
                   clearable
                   v-bind="attrs"
                   v-on="on"
