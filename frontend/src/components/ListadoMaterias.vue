@@ -39,8 +39,6 @@
 
 <script>
 import AbmMateria from "./AbmMateria.vue";
-//import axios from "axios"; // Importa axios si no lo has hecho
-
 export default {
   components: {
     AbmMateria,
@@ -94,11 +92,9 @@ export default {
             const materias = response.data;
            
             const promises = materias.map((materia) => {
-             
               const carreraPromise = that.axios.get(
                 `/apiv1/carrera/${materia.id_carrera}`
               );
-            
               const profesorPromise = that.axios.get(
                 `/apiv1/profesor/${materia.id_profesor}`
               );
