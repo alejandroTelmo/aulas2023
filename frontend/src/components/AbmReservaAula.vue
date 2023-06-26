@@ -24,7 +24,7 @@
                   @keyup.enter="submit"
                   v-model="fechaDesde"
                   label="Fecha desde:"
-                  prepend-icon="mdi-calendar"
+                  prepend-inner-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
                   v-on="on"
@@ -57,7 +57,7 @@
                   @keyup.enter="submit"
                   v-model="horaDesde"
                   label="Hora desde:"
-                  prepend-icon="mdi-clock"
+                  prepend-inner-icon="mdi-clock"
                   readonly
                   v-bind="attrs"
                   v-on="on"
@@ -95,7 +95,7 @@
                   @keyup.enter="submit"
                   v-model="fechaHasta"
                   label="Fecha hasta:"
-                  prepend-icon="mdi-calendar"
+                  prepend-inner-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
                   v-on="on"
@@ -127,7 +127,7 @@
                   @keyup.enter="submit"
                   v-model="horaHasta"
                   label="Hora hasta:"
-                  prepend-icon="mdi-clock"
+                  prepend-inner-icon="mdi-clock"
                   readonly
                   v-bind="attrs"
                   v-on="on"
