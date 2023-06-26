@@ -51,7 +51,6 @@ export default {
       headers: [
         { text: "ID", value: "id" },
         { text: "Nombre", value: "nombre" },
-        { text: "Alumno", value: "alumnos" },
         { text: "Cantidad de alumnos", value: "cant_alumnos" },
         { text: "Carrera", value: "carrera" },
         { text: "Profesor", value: "profesor" },
@@ -142,7 +141,6 @@ export default {
       this.materiaSeleccionada = {
         id: materia.id,
         nombre: materia.nombre,
-        alumnos:materia.alumnos,
         cant_alumnos:materia.cant_alumnos,
         id_carrera:materia.id_carrera,
         id_profesor:materia.id_profesor,

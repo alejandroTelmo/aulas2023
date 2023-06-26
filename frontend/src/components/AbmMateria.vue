@@ -12,18 +12,10 @@
         ></v-text-field>
         <v-text-field
           @keyup.enter="submit"
-          v-model="alumnos"
-          label="Alumnos"
-          :rules="alumnosRules"
-          required
-        ></v-text-field>
-        <v-text-field
-          @keyup.enter="submit"
           v-model="cant_alumnos"
           label="Cantidad de Alumnos"
           required
         ></v-text-field>
-
         <v-select
           label="Seleccionar Profesor"
           v-model="selectedProfesorId"
@@ -56,7 +48,7 @@ export default {
   props: {
     materia: {
       type: Object,
-      default: () => ({ id: "", nombre: "",alumnos:"",cantidad_alumnos:"",id_carrera:"",id_profesor:"" }),
+      default: () => ({ id: "", nombre: "",cantidad_alumnos:"",id_carrera:"",id_profesor:"" }),
     },
     editar: {
       type: Boolean,
@@ -69,7 +61,6 @@ export default {
 
       valid: false,
       id:0,
-      alumnos: "",
       cant_alumnos:"",
       nombreMateria: "",
       profesores:[],
@@ -93,7 +84,6 @@ export default {
       handler(nuevoValor) {
         this.id = nuevoValor.id;
         this.nombreMateria = nuevoValor.nombre;
-        this.alumnos = nuevoValor.alumnos;
         this.cant_alumnos = nuevoValor.cant_alumnos;
         this.id_carrera = nuevoValor.id_carrera;
         this.id_profesor = nuevoValor.id_profesor;
@@ -113,7 +103,6 @@ export default {
     guardarMateria() {
       const data = {
         nombre: this.nombreMateria,
-        alumnos:this.alumnos,
         cant_alumnos:this.cant_alumnos,
         id_carrera:this.selectedCarreraId,
         id_profesor:this.selectedProfesorId,
@@ -125,7 +114,6 @@ export default {
         .then(function (response) {
           console.log(response);
           that.nombreMateria = "";
-          that.alumnos="";
           that.cant_alumnos="";
           that.selectedCarrera=null;
           that.selectedProfesor=null
@@ -141,7 +129,6 @@ export default {
       const data = {
         id:this.materia.id,
         nombre: this.nombreMateria,
-        alumnos:this.alumnos,
         cant_alumnos:this.cant_alumnos,
         id_carrera:this.selectedCarreraId,
         id_profesor:this.selectedProfesorId,
@@ -155,7 +142,6 @@ export default {
           alert("Registro Editado con Éxito!!"); 
           that.id = "";
           that.nombreMateria = "";
-          that.alumnos = "";
           that.cant_alumnos = "";
           that.id_carrera = "";
           that.id_profesor = "";
@@ -200,7 +186,6 @@ export default {
   },
   created() {
   this.nombreMateria = this.materia.nombre;
-  this.alumnos = this.materia.alumnos;
   this.cant_alumnos = this.materia.cant_alumnos;
   this.selectedCarreraId = this.materia.id_carrera;
   this.selectedProfesorId = this.materia.id_profesor;
