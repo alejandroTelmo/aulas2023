@@ -8,9 +8,9 @@ use Yii;
  * This is the model class for table "profesor".
  *
  * @property int $id
- * @property string|null $nombre
- * @property string|null $apellido
- * @property bool|null $mostrar_nombre
+ * @property string $nombre
+ * @property string $apellido
+ * @property string $mostrar
  *
  * @property Materia[] $materias
  */
@@ -30,9 +30,9 @@ class Profesor extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['mostrar_nombre'], 'boolean'],
-            [['nombre'], 'string', 'max' => 60],
-            [['apellido'], 'string', 'max' => 50],
+            [['nombre', 'apellido', 'mostrar'], 'required'],
+            [['nombre', 'apellido'], 'string', 'max' => 128],
+            [['mostrar'], 'string', 'max' => 256],
         ];
     }
 
@@ -45,7 +45,7 @@ class Profesor extends \yii\db\ActiveRecord
             'id' => 'ID',
             'nombre' => 'Nombre',
             'apellido' => 'Apellido',
-            'mostrar_nombre' => 'Mostrar Nombre',
+            'mostrar' => 'Mostrar',
         ];
     }
 

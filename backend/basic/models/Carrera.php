@@ -8,7 +8,7 @@ use Yii;
  * This is the model class for table "carrera".
  *
  * @property int $id
- * @property string|null $nombre
+ * @property string $nombre
  *
  * @property Materia[] $materias
  */
@@ -28,7 +28,8 @@ class Carrera extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre'], 'string', 'max' => 50],
+            [['nombre'], 'required'],
+            [['nombre'], 'string', 'max' => 128],
         ];
     }
 

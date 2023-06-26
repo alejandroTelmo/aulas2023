@@ -15,8 +15,7 @@ class m230604_151801_create_Materia_table extends Migration
         $this->createTable('{{%materia}}', [
             'id' => $this->primaryKey(),
             'nombre' => $this->string(128)->notNull(),
-            'alumnos' => $this->string(128)->notNull(),
-            'cant_alumnos' => $this->integer()->defaultValue(5),
+            'cant_alumnos' => $this->integer()->defaultValue(0),
             'id_carrera' => $this->integer(),
             'id_profesor' => $this->integer(),
         ]);

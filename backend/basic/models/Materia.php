@@ -9,8 +9,7 @@ use Yii;
  *
  * @property int $id
  * @property string $nombre
- * @property string $alumnos
- * @property int|null $cant_alumnos
+ * @property int $cant_alumnos
  * @property int|null $id_carrera
  * @property int|null $id_profesor
  *
@@ -34,10 +33,11 @@ class Materia extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'alumnos'], 'required'],
-            [['cant_alumnos', 'id_carrera', 'id_profesor'], 'default', 'value' => null],
+            [['nombre'], 'required'],
+            [['id_carrera', 'id_profesor'], 'default', 'value' => null],
+            [['cant_alumnos'], 'default', 'value' => 0],
             [['cant_alumnos', 'id_carrera', 'id_profesor'], 'integer'],
-            [['nombre', 'alumnos'], 'string', 'max' => 128],
+            [['nombre'], 'string', 'max' => 128],
             [['id_carrera'], 'exist', 'skipOnError' => true, 'targetClass' => Carrera::class, 'targetAttribute' => ['id_carrera' => 'id']],
             [['id_profesor'], 'exist', 'skipOnError' => true, 'targetClass' => Profesor::class, 'targetAttribute' => ['id_profesor' => 'id']],
         ];

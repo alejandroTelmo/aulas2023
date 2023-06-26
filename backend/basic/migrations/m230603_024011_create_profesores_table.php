@@ -14,9 +14,9 @@ class m230603_024011_create_profesores_table extends Migration
     {
         $this->createTable('{{%profesor}}', [
             'id' => $this->primaryKey(),
-            'nombre' => $this->string(60),
-            'apellido' => $this->string(50),
-            'mostrar_nombre' => $this->boolean(),
+            'nombre' => $this->string(128)->notNull(),
+            'apellido' => $this->string(128)->notNull(),
+            'mostrar' => $this->string(256)->notNull(),
         ]);
     }
 

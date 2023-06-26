@@ -14,7 +14,7 @@ class m230603_023639_create_carreras_table extends Migration
     {
         $this->createTable('{{%carrera}}', [
             'id' => $this->primaryKey(),
-            'nombre' => $this->string(50),
+            'nombre' => $this->string(128)->notNull(),
         ]);
     }
 
