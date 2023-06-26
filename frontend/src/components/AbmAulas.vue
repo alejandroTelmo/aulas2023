@@ -1,7 +1,7 @@
 <template>
     <v-form ref= "form" v-model="valid" @submit.prevent>
       <v-card>
-        <v-card-title>Agregar Carrera</v-card-title>
+        <v-card-title>Agregar Aula</v-card-title>
         <v-card-text>
             <v-text-field
                 v-model="descripcion"
