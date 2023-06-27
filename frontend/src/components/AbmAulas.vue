@@ -17,17 +17,17 @@
                 ></v-text-field>
                 <v-text-field
                 v-model="cant_pcs"
-                label="Cant_pcs"
+                label="Cantidad de PC's"
                 required
                 ></v-text-field>
                 <v-text-field
                 v-model="cant_proyectores"
-                label="Cant_Proyector"
+                label="Cantidad de Proyectores"
                 required
                 ></v-text-field>
                 <v-checkbox
                 v-model="es_climatizada"
-                label="¿Es Climatizada"
+                label="¿Es Climatizada?"
                 ></v-checkbox>
                 <v-text-field
                 v-model="aforo"
