@@ -66,7 +66,7 @@
               <v-time-picker
                 @keyup.enter="submit"
                 v-model="horaDesde"
-                format="ampm"
+                format="24hr"
               >
                 <v-spacer></v-spacer>
                 <v-btn text color="primary" @click="$refs.menu.save(horaDesde)">
@@ -133,7 +133,7 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-time-picker v-model="horaHasta" format="ampm">
+              <v-time-picker v-model="horaHasta" format="24hr">
                 <v-spacer></v-spacer>
                 <v-btn
                   text
