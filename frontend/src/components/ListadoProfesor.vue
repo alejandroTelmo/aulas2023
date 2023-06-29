@@ -49,10 +49,10 @@
         loading: true,
         options: {},
         headers: [
-          { text: "ID", value: "id" },
-          { text: "Nombre", value: "nombre" },
-          { text: "Apellido", value: "Apeliido" },
-          { text: "Mostrar Nombre", value: "MostrarNombre" },
+          { text: "id", value: "id" },
+          { text: "nombre", value: "nombre" },
+          { text: "apellido", value: "apellido" },
+          { text: "mostrar", value: "mostrar" },
           { text: "Acciones", value: "actions", sortable: false },
         ],
         footerProps:{
@@ -113,12 +113,14 @@
         this.profesorSeleccionada = {
           id: profesor.id,
           nombre: profesor.nombre,
+          apellido : profesor.apellido,
+          mostrar : profesor.mostrar
         };
         this.editar = true;
         this.mostrarAbmProfesor = true;
       },
       guardarAbmProfesor() {
-        console.log("Profesor Guardada con exito!");
+        console.log("Profesor Guardado con exito!");
         this.mostrarAbmProfesor = false;
         this.obtenerListadoDeApi();
       },
@@ -137,10 +139,11 @@
             that.obtenerListadoDeApi();
           });
       },
-      cancelarAbmCarrera() {
+      cancelarAbmProfesor() {
         this.mostrarAbmProfesor = false;
-        this.profesorSeleccionada.nombre = "";
         this.profesorSeleccionada.id = "";
+        this.profesorSeleccionada.nombre = "";
+        this.profesorSeleccionada.apellido = "";
       },
     },
   };

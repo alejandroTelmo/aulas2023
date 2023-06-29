@@ -1,25 +1,27 @@
 <template>
-    <v-form v-model="valid" @submit.prevent>
+    <v-form ref= "form" v-model="valid" @submit.prevent>
       <v-card>
         <v-card-title>Agregar Profesor</v-card-title>
         <v-card-text>
-          <v-text-field
-            @keyup.enter="submit"
-            v-model="Nombre"
-            label="Nombre"
+            <v-text-field  
+            v-model="nombre"
+            label="nombre"
             :rules="nombreRules"
-          ></v-text-field>
-          <v-text-field  
+            ></v-text-field>
+            <v-text-field  
             v-model="apellido"           
-            label="Apellido"
+            label="apellido"
             :rules="apellidoRules"
             required
           ></v-text-field>
+          <v-text-field  
+            v-model="mostrar"
+            label="texto a mostrar"
+             ></v-text-field>
         </v-card-text>
       <v-card-actions>
         <v-btn color="primary" @click="submit" :disabled="!valid"
-          >Guardar</v-btn
-        >
+          >Guardar</v-btn>
         <v-btn color="secondary" @click="cancelar">Cancelar</v-btn>
       </v-card-actions>
     </v-card>
@@ -32,7 +34,7 @@
     props: {
       profesor: {
         type: Object,
-        default: () => ({ nombre: "",apellido:"",mostrarnombre : "" }),
+        default: () => ({ id:"",nombre: "",apellido:"",mostrar:"" }),
       },
       editar: {
         type: Boolean,
@@ -43,16 +45,22 @@
     data() {
       return {
         valid: false,
-        Nombre: "",
+        id: "",
+        nombre: "",
         apellido:"",
+        mostrar:"",
         profesorLocal: null,
+        idRules: [
+          v => !!v || 'El ID  es requerido',
+        ],
         nombreRules: [
           v => !!v || 'El nombre es requerido',
         ],
-
-        apeliidoRules: [
+        apellidoRules: [
           v => !!v || 'El apellido es requerido',
         ],
+        
+
       };
     },
     watch: {
@@ -63,8 +71,10 @@
     methods: {
       setearValores(){
             if(this.editar){
-                this.nombre = this.profesor.nombre
+                this.id = this.profesor.id
+                this.nombre = this.profesornombre
                 this.apellido = this.profesor.apellido
+                this.mostrar =this.profesor.mostrar
                 
             }
         },
@@ -79,8 +89,11 @@
       },
       guardarProfesor() {
         const data = {
+          id: this.id,
           nombre: this.nombre,
           apellido: this.apellido,
+          mostrar: this.mostrar
+
         };
         console.log(data);
         var that = this;
@@ -102,6 +115,9 @@
       editarProfesor() {
         const data = {
           nombre: this.Nombre,
+          apellido: this.apellido,
+          mostrar: this.mostrar,
+
         };
         var that = this;
         this.axios
