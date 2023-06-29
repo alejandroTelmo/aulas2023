@@ -63,8 +63,8 @@ export default {
       options: {},
       headers: [
         { text: "ID", value: "id" },
-        { text: "Materia", value: "materia.nombre", sortable: false },
-        { text: "ID Reserva", value: "id_reserva", sortable: false },
+        { text: "Materia", value: "materia.nombre" },
+        { text: "ID Reserva", value: "id_reserva" },
         { text: "Fecha Hora Desde", value: "fh_desde" },
         { text: "Fecha Hora Hasta", value: "fh_hasta" },
         { text: "Es Virtual", value: "clase_virtual" },
