@@ -16,31 +16,10 @@ class HorariomateriaController extends BaseController
     {
         $actions = parent::actions();
 
-        /*         $actions['index'] = [
-            'class' => 'yii\rest\IndexAction',
-            'modelClass' => $this->modelClass,
-            'checkAccess' => [$this, 'checkAccess'],
-            'prepareDataProvider' => function ($action) {
-
-                $requestParams = Yii::$app->getRequest()->getBodyParams();
-                if (empty($requestParams)) {
-                    $requestParams = Yii::$app->getRequest()->getQueryParams();
-                }
-
-                $dataProvider = (new $this->modelClass)->find()
-                    ->getWithMateria()
-                    ->paginate($requestParams['page'], $requestParams['per-page'])
-                    ->orderBy($requestParams['sort']);
-
-                Yii::$app->response->headers->set('X-Pagination-Current-Page', $dataProvider->getPage());
-                Yii::$app->response->headers->set('X-Pagination-Page-Count', $dataProvider->getPerPage());
-                Yii::$app->response->headers->set('X-Pagination-Total-Count', $dataProvider->getTotalCount());
-
-                return $dataProvider->asArray()->all();
-            }
-        ]; */
         unset($actions['index']);
+
         unset($actions['create']);
+
         return $actions;
     }
 
@@ -70,15 +49,9 @@ class HorariomateriaController extends BaseController
 
     public function actionIndex()
     {
-        $requestParams = Yii::$app->getRequest()->getBodyParams();
-        if (empty($requestParams)) {
-            $requestParams = Yii::$app->getRequest()->getQueryParams();
-        }
+        $requestParams = Yii::$app->getRequest()->getQueryParams();
 
-        $dataProvider = (new $this->modelClass)->find()
-            ->getWithMateria()
-            ->paginate($requestParams['page'], $requestParams['per-page'])
-            ->orderBy($requestParams['sort']);
+        $dataProvider = (new $this->modelClass)->getDataWithMateria($requestParams);
 
         Yii::$app->response->headers->set('X-Pagination-Current-Page', $dataProvider->getPage());
         Yii::$app->response->headers->set('X-Pagination-Page-Count', $dataProvider->getPerPage());
