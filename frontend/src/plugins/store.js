@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -10,14 +11,22 @@ const store = new Vuex.Store({
   mutations: {
     successfulLogin(state,loggedIn){
       state.loggedIn = loggedIn;
-      console.log(state.loggedIn,this.$route)
-      /* this.$router.push('/home' ) */
+      console.log(state.loggedIn,)
+      router.push('/home')
+    },
+    logout(state,loggedIn){
+      state.loggedIn = loggedIn;
+      console.log(state.loggedIn,)
+      router.push('/login')
     }
   },
   actions: {
     loginAttempt({commit}){
       console.log("login")
       commit('successfulLogin',true)
+    },
+    logoutAttempt({commit}){
+      commit('logout',false)
     }
   },
   getters: {

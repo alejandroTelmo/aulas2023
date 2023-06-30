@@ -7,7 +7,7 @@
       <v-btn small text fab>
         <v-icon>mdi-cog-outline</v-icon>
       </v-btn>
-      <v-btn small @click="logout">
+      <v-btn small @click="$store.dispatch('logoutAttempt')">
         <v-icon>mdi-exit-to-app</v-icon>
       </v-btn>
     </v-app-bar>
@@ -20,9 +20,7 @@ export default {
 
   data: () => ({}),
   methods: {
-    logout() {
-      console.log("Logout...");
-    },
+    
   },
 };
 </script>
