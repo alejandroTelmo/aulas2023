@@ -1,7 +1,9 @@
 <template>
   <v-app>
-    <MainMenu> </MainMenu>
-    <MainBar></MainBar>
+    <MainMenu v-if="$store.state.loggedIn"
+    ></MainMenu>
+    <MainBar v-if="$store.state.loggedIn"
+    ></MainBar>
     <v-main>
       <v-container fluid> <router-view /> </v-container>
     </v-main>
