@@ -3,11 +3,13 @@
     <v-card>
       <v-card-title>Agregar Reserva</v-card-title>
       <v-card-text>
-        <v-text-field
-          @keyup.enter="submit"
-          v-model="idAulaNuevo"
-          label="Id de aula:"
-        ></v-text-field>
+        <v-select
+          label="Aula"
+          v-model="selectedAulaId"
+          :items="aulas"
+          item-text="descripcion"
+          item-value="id"
+        ></v-select>
 
         <!--INICIO CALENDARIO FECHA DESDE:-->
         <template>
@@ -189,7 +191,9 @@ export default {
   data() {
     return {
       valid: false,
-      idAulaNuevo: "",
+      id_aula: "",
+      selectedAulaId: null,
+      aulas: [],
       fechaDesde: "",
       horaDesde: "",
       horaHasta: "",
@@ -206,7 +210,7 @@ export default {
     reservaaula: {
       handler(nuevoValor) {
         if (nuevoValor) {
-          this.idAulaNuevo = nuevoValor.idAulaNuevo;
+          this.id_aula = nuevoValor.id_aula;
 
           // Obtener fecha y hora desde nuevoValor.fh_desde
           if (nuevoValor.fh_desde) {
@@ -239,7 +243,7 @@ export default {
     },
     guardarReserva() {
       const data = {
-        id_aula: this.idAulaNuevo,
+        id_aula: this.selectedAulaId,
         fh_desde: `${this.fechaDesde} ${this.horaDesde}`,
         fh_hasta: `${this.fechaHasta} ${this.horaHasta}`,
         observacion: this.observacionNueva,
@@ -250,7 +254,7 @@ export default {
         .post("/apiv1/reservaaula", data)
         .then(function (response) {
           console.log(response);
-          that.idAulaNuevo = "";
+          that.selectedAulaId = null;
           that.fechaDesde = "";
           that.horaDesde = "";
           that.horaHasta = "";
@@ -266,7 +270,7 @@ export default {
     },
     editarReserva() {
       const data = {
-        id_aula: this.idAulaNuevo,
+        id_aula: this.selectedAulaId,
         fh_desde: `${this.fechaDesde} ${this.horaDesde}`,
         fh_hasta: `${this.fechaHasta} ${this.horaHasta}`,
         observacion: this.observacionNueva,
@@ -277,7 +281,7 @@ export default {
         .then(function (response) {
           console.log(response);
           /* alert("Registro Guardado!!"); */
-          that.idAulaNuevo = "";
+          that.id_aula = "";
           that.fechaDesde = "";
           that.horaDesde = "";
           that.horaHasta = "";
@@ -291,6 +295,20 @@ export default {
           that.$emit("guardar");
         });
     },
+    getAulas() {
+      var that = this;
+      this.axios
+        .get("/apiv1/aula")
+        .then((response) => {
+          console.log(response.data);
+          that.aulas = response.data.map((aula) => {
+            return { id: aula.id, descripcion: aula.descripcion };
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
     cancelar() {
       this.$emit("cancelar");
     },
@@ -298,7 +316,7 @@ export default {
   created() {
     this.reservaLocal = this.reservaaula;
 
-    this.idAulaNuevo = this.reservaLocal.id_aula;
+    this.selectedAulaId = this.reservaLocal.id_aula;
 
     if (this.reservaLocal.fh_desde) {
       const [fechaDesde, horaDesde] = this.reservaLocal.fh_desde.split(" ");
@@ -313,6 +331,7 @@ export default {
     }
 
     this.observacionNueva = this.reservaLocal.observacion;
+    this.getAulas();
   },
 
   /*   beforeDestroy() {

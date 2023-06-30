@@ -1,0 +1,214 @@
+<template>
+  <v-form v-model="valid" @submit.prevent>
+    <v-card>
+      <v-card-title>Agregar Reserva</v-card-title>
+      <v-card-text>
+        <v-select
+          label="Materia"
+          v-model="selectedMateriaId"
+          :items="materias"
+          item-text="nombre"
+          item-value="id"
+        ></v-select>
+
+        <!--INICIO CALENDARIO FECHA DESDE:-->
+        <template>
+          <div>
+            <v-menu
+              @keyup.enter="submit"
+              :close-on-content-click="true"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  @keyup.enter="submit"
+                  v-model="fechaDesde"
+                  label="Fecha desde:"
+                  prepend-inner-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                @keyup.enter="submit"
+                v-model="fechaDesde"
+                min="1950-01-01"
+                locale="es-ar"
+              ></v-date-picker>
+            </v-menu>
+          </div>
+        </template>
+        <!--FIN CALENDARIO DE FECHA DESDE-->
+
+        <!--INICIO CALENDARIO FECHA HASTA:-->
+        <template>
+          <div>
+            <v-menu
+              justify="center"
+              @keyup.enter="submit"
+              ref="menuHasta"
+              :close-on-content-click="true"
+              transition="scale-transition"
+              offset-y
+              min-width="auto"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  @keyup.enter="submit"
+                  v-model="fechaHasta"
+                  label="Fecha hasta:"
+                  prepend-inner-icon="mdi-calendar"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-date-picker
+                v-model="fechaHasta"
+                min="1950-01-01"
+                locale="es-ar"
+              ></v-date-picker>
+            </v-menu>
+          </div>
+        </template>
+        <!--FIN CALENDARIO DE FECHA HASTA-->
+        <v-select
+          label="Aula"
+          v-model="selectedAulaId"
+          :items="aulas"
+          item-text="descripcion"
+          item-value="id"
+        ></v-select>
+      </v-card-text>
+      <v-card-actions>
+        <v-btn color="primary" @click="submit" :disabled="!valid"
+          >Guardar</v-btn
+        >
+        <v-btn color="secondary" @click="cancelar">Cancelar</v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-form>
+</template>
+
+<script>
+/* import { required } from "vuelidate/lib/validators"; */
+export default {
+  /*   validations: {
+    nuevoNombre: { required },
+  }, */
+  data() {
+    return {
+      valid: false,
+      id: "",
+      selectedMateriaId: null,
+      selectedAulaId: null,
+      aulas: [],
+      materias: [],
+      fechaDesde: "",
+      fechaHasta: "",
+      reservaLocal: null,
+      // nombreRules: [
+      //   v => !!v || 'El campo es requerido',
+      // ],
+    };
+  },
+
+  methods: {
+    submit() {
+      console.log(this.editar);
+      if (this.editar) {
+        this.editarReserva();
+      } else {
+        this.guardarReserva();
+      }
+    },
+    guardarReserva() {
+      const data = {
+        id: this.selectedMateriaId,
+        fh_desde: `${this.fechaDesde}`,
+        fh_hasta: `${this.fechaHasta} `,
+      };
+      console.log(data);
+      var that = this;
+      this.axios
+        .post("/apiv1/reservaaula", data)
+        .then(function (response) {
+          console.log(response);
+          that.selectedMateriaId = null;
+          that.fechaDesde = "";
+          that.fechaHasta = "";
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          that.$emit("guardar");
+        });
+    },
+    editarReserva() {
+      const data = {
+        id: this.selectedMateriaId,
+        fh_desde: `${this.fechaDesde} `,
+        fh_hasta: `${this.fechaHasta} `,
+      };
+      var that = this;
+      this.axios
+        .patch(`/apiv1/materias/${this.materias.id}`, data)
+        .then(function (response) {
+          console.log(response);
+          /* alert("Registro Guardado!!"); */
+          that.id = "";
+          that.fechaDesde = "";
+          that.fechaHasta = "";
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          that.$emit("guardar");
+        });
+    },
+    getMaterias() {
+      var that = this;
+      this.axios
+        .get("/apiv1/materia")
+        .then((response) => {
+          console.log(response.data);
+          that.materias = response.data.map((materia) => {
+            return { id: materia.id, nombre: materia.nombre };
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    getAulas() {
+      var that = this;
+      this.axios
+        .get("/apiv1/aula")
+        .then((response) => {
+          console.log(response.data);
+          that.aulas = response.data.map((aula) => {
+            return { id: aula.id, descripcion: aula.descripcion };
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    cancelar() {
+      this.$emit("cancelar");
+    },
+  },
+  created() {
+    this.getMaterias();
+    this.getAulas();
+  },
+  /*   beforeDestroy() {
+    this.nuevoNombre = "";
+  }, */
+};
+</script>

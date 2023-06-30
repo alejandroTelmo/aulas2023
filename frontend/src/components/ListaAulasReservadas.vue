@@ -15,7 +15,11 @@
           <v-toolbar-title>Reservas de Aulas</v-toolbar-title>
           <v-divider class="mx-4" inset vertical></v-divider>
           <v-spacer></v-spacer>
-          <v-btn color="primary" @click="agregarReserva">Agregar Reserva</v-btn>
+          <v-btn color="primary" @click="abrirReservaMateria"
+            >Reservar Materia</v-btn
+          >
+          <v-spacer></v-spacer>
+          <v-btn color="primary" @click="agregarReserva">Reservar Aula</v-btn>
         </v-toolbar>
       </template>
       <template v-slot:item.actions="{ item }">
@@ -26,6 +30,7 @@
       </template>
     </v-data-table>
 
+    <!--RESERVA AULA-->
     <v-dialog v-model="mostrarAbmReservaAula" max-width="500px">
       <AbmReservaAula
         :reservaaula="reservaSeleccionada"
@@ -34,14 +39,24 @@
         @cancelar="cancelarAbmReservaAula"
       />
     </v-dialog>
+
+    <!--RESERVA MATERIA-->
+    <v-dialog v-model="mostrarAbmReservaMateria" max-width="500px">
+      <AbmReservaMateria
+        @guardar="guardarAbmReservaMateria"
+        @cancelar="cancelarAbmReservaMateria"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import AbmReservaAula from "./AbmReservaAula.vue";
+import AbmReservaMateria from "./AbmReservaMateria.vue";
 export default {
   components: {
     AbmReservaAula,
+    AbmReservaMateria,
   },
   data() {
     return {
@@ -60,8 +75,11 @@ export default {
         "items-per-page-options": [10, 25, 50],
       },
       listaReservaAulas: [],
+      listaReservaMaterias: [],
+      mostrarAbmReservaMateria: false,
       mostrarAbmReservaAula: false,
       reservaSeleccionada: {},
+      materiaSeleccionada: {},
       editar: false,
     };
   },
@@ -104,10 +122,14 @@ export default {
     mostrarFormularioAbmReservaAula() {
       this.mostrarAbmReservaAula = true;
     },
+
     agregarReserva() {
       this.editar = false;
       this.reservaSeleccionada = {};
       this.mostrarFormularioAbmReservaAula();
+    },
+    abrirReservaMateria() {
+      this.mostrarAbmReservaMateria = true;
     },
     editarReserva(reservaaula) {
       console.log(reservaaula.id_aula);
@@ -124,9 +146,14 @@ export default {
       this.editar = true;
       this.mostrarAbmReservaAula = true;
     },
+
     guardarAbmReservaAula() {
       console.log("Reserva Guardada con exito!");
       this.mostrarAbmReservaAula = false;
+      this.obtenerListadoDeApi();
+    },
+    guardarAbmReservaMateria() {
+      this.mostrarAbmReservaMateria = false;
       this.obtenerListadoDeApi();
     },
     eliminarReserva(reservaaula) {
@@ -144,6 +171,7 @@ export default {
           that.obtenerListadoDeApi();
         });
     },
+
     cancelarAbmReservaAula() {
       this.mostrarAbmReservaAula = false;
       this.reservaSeleccionada.id = "";
@@ -151,6 +179,9 @@ export default {
       this.reservaSeleccionada.fh_desde = "";
       this.reservaSeleccionada.fh_hasta = "";
       this.reservaSeleccionada.observacion = "";
+    },
+    cancelarAbmReservaMateria() {
+      this.mostrarAbmReservaMateria = false;
     },
   },
 };
