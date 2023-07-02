@@ -9,7 +9,6 @@ import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias"
 import ListadoMaterias from "../components/ListadoMaterias"
 import ListadoProfesor from "../components/ListadoProfesor";
 import CalendarioReservasAulas from "../components/CalendarioReservasAulas"
-import Login from "../components/AulasLogin"
 
 Vue.use(VueRouter);
 
@@ -59,11 +58,6 @@ const routes = [
     name: "CalendarioReservasAulas",
     component: CalendarioReservasAulas,
   },
-  {
-    path: "/login",
-    name: "Login",
-    component: Login,
-  }
 ];
 
 const router = new VueRouter({

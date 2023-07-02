@@ -1,5 +1,7 @@
 <template>
   <v-app>
+    <AulasLogin v-if="!$store.state.loggedIn">
+    </AulasLogin>
     <MainMenu v-if="$store.state.loggedIn"
     ></MainMenu>
     <MainBar v-if="$store.state.loggedIn"
@@ -13,6 +15,7 @@
 <script>
 import MainMenu from "./components/MainMenu.vue";
 import MainBar from "./components/MainBar.vue";
+import AulasLogin from './components/AulasLogin.vue';
 
 export default {
   name: "App",
@@ -20,12 +23,11 @@ export default {
   components: {
     MainMenu,
     MainBar,
+    AulasLogin,
   },
 
   data: () => ({
     //
-    showMenu: true,
-    items: [{ title: "Home", icon: "mdi-view-dashboard" }],
   }),
 };
 </script>
