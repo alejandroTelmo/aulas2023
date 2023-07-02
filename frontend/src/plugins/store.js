@@ -17,7 +17,7 @@ const store = new Vuex.Store({
     logout(state,loggedIn){
       state.loggedIn = loggedIn;
       console.log(state.loggedIn,)
-      router.push('/login')
+      router.push('/')
     }
   },
   actions: {
