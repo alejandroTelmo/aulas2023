@@ -35,4 +35,32 @@ class ReservaAula extends \app\models\ReservaAula
 
         return $dataProvider;
     }
+
+    public function saveBatchReservaAula($params){
+        $transaction = ReservaAula::getDb()->beginTransaction();
+        $ids_reservaAula = [];
+        try {
+            foreach ($params as $value) {
+                $reservaAula = new ReservaAula();
+                $reservaAula->id_aula = $value['id_aula'];
+                $reservaAula->fh_desde = $value['fh_desde'];
+                $reservaAula->fh_hasta = $value['fh_hasta'];
+                $reservaAula->save();
+                array_push($ids_reservaAula,$reservaAula->id);
+                $horarioMateria = HorarioMateria::findOne(['id'=> $value['id_horarioMateria']]);
+                $horarioMateria->id_reserva = $reservaAula->id;
+                $horarioMateria->save();
+            }
+            $transaction->commit();
+            return new ActiveDataProvider([
+                'query' => ReservaAula::find()->where(['id'=>$ids_reservaAula]),
+            ]);
+        } catch (\Exception $e) {
+            $transaction->rollBack();
+            throw $e;
+        } catch (\Throwable $e) {
+            $transaction->rollBack();
+            throw $e;
+        }
+    }
 }
