@@ -57,7 +57,7 @@ const routes = [
     path: "/calendario",
     name: "CalendarioReservasAulas",
     component: CalendarioReservasAulas,
-  }
+  },
 ];
 
 const router = new VueRouter({
