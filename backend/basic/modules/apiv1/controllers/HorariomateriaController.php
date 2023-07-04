@@ -20,6 +20,19 @@ class HorariomateriaController extends BaseController
 
         unset($actions['create']);
 
+        $actions['obtenerporfecha'] = [
+            'class' => 'yii\rest\IndexAction',
+            'modelClass' => $this->modelClass,
+            'checkAccess' => [$this, 'checkAccess'],
+            'prepareDataProvider' => function ($action) {
+                $horarioMateriaModel = new \app\modules\apiv1\models\HorarioMateria();
+                $requestParams = Yii::$app->getRequest()->getQueryParams();
+                $dataProvider = $horarioMateriaModel->getDataBetweenDate($requestParams);
+
+                return $dataProvider;
+            }
+        ];
+
         return $actions;
     }
 
