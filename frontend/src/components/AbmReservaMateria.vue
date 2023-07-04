@@ -1,5 +1,5 @@
 <template>
-  <v-form v-model="valid" @submit.prevent>
+  <v-form v-model="valid" @submit.prevent ref="form">
     <v-card>
       <v-card-title>Agregar Reserva</v-card-title>
       <v-card-text>
@@ -9,6 +9,7 @@
           :items="materias"
           item-text="nombre"
           item-value="id"
+          :rules="materiaRules"
         ></v-select>
 
         <!--INICIO CALENDARIO FECHA DESDE:-->
@@ -30,6 +31,7 @@
                   readonly
                   v-bind="attrs"
                   v-on="on"
+                  :rules="fechaDesdeRules"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -64,6 +66,7 @@
                   readonly
                   v-bind="attrs"
                   v-on="on"
+                  :rules="fechaHastaRules"
                 ></v-text-field>
               </template>
               <v-date-picker
@@ -72,15 +75,47 @@
                 locale="es-ar"
               ></v-date-picker>
             </v-menu>
+            <v-btn color="primary" @click="getHorarioMaterias" :disabled="!isBuscarEnabled"
+          >Buscar</v-btn>
           </div>
         </template>
         <!--FIN CALENDARIO DE FECHA HASTA-->
+        <template>
+          <v-simple-table height="150px" dense>
+          <template v-slot:default>
+          <thead>
+            <tr>
+              <th>
+                N°
+              </th>
+              <th>
+                Fecha Hora Desde
+              </th>
+              <th>
+                Fecha Hora Hasta
+              </th>
+            </tr>
+        </thead>
+        <tbody>
+          <tr
+            v-for="(item, index) in horarioMateria"
+            :key="item.id"
+          >
+            <td>{{ index + 1 }}</td>
+            <td style="text-align: left">{{ item.fh_desde }}</td>
+            <td style="text-align: left">{{ item.fh_hasta }}</td>
+          </tr>
+        </tbody>
+        </template>
+        </v-simple-table>
+        </template>
         <v-select
           label="Aula"
           v-model="selectedAulaId"
           :items="aulas"
           item-text="descripcion"
           item-value="id"
+          :rules="aulaRules"
         ></v-select>
       </v-card-text>
       <v-card-actions>
@@ -94,11 +129,8 @@
 </template>
 
 <script>
-/* import { required } from "vuelidate/lib/validators"; */
+
 export default {
-  /*   validations: {
-    nuevoNombre: { required },
-  }, */
   data() {
     return {
       valid: false,
@@ -107,62 +139,45 @@ export default {
       selectedAulaId: null,
       aulas: [],
       materias: [],
+      horarioMateria: [],
       fechaDesde: "",
       fechaHasta: "",
       reservaLocal: null,
-      // nombreRules: [
-      //   v => !!v || 'El campo es requerido',
-      // ],
+      materiaRules: [ v => !!v || 'El campo es requerido'],
+      fechaDesdeRules: [ v => !!v || 'El campo es requerido'],
+      fechaHastaRules: [ v => !!v || 'El campo es requerido'],
+      aulaRules: [ v => !!v || 'El campo es requerido'],
     };
   },
-
+  computed: {
+    isBuscarEnabled() {
+      return (
+        this.selectedMateriaId !== null &&
+        this.fechaDesde !== '' &&
+        this.fechaHasta !== ''
+      );
+    },
+  },
   methods: {
     submit() {
-      console.log(this.editar);
-      if (this.editar) {
-        this.editarReserva();
-      } else {
         this.guardarReserva();
-      }
     },
     guardarReserva() {
-      const data = {
-        id: this.selectedMateriaId,
-        fh_desde: `${this.fechaDesde}`,
-        fh_hasta: `${this.fechaHasta} `,
-      };
-      console.log(data);
+      let data = [];
+      this.horarioMateria.forEach(item => {
+        data.push({
+              id_horarioMateria: item.id,
+              fh_desde: item.fh_desde,
+              fh_hasta: item.fh_hasta,
+              id_aula: this.selectedAulaId,
+            });
+      });
       var that = this;
       this.axios
-        .post("/apiv1/reservaaula", data)
-        .then(function (response) {
-          console.log(response);
-          that.selectedMateriaId = null;
-          that.fechaDesde = "";
-          that.fechaHasta = "";
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
+        .post("/apiv1/reservaaulaparahorariomateria", data)
         .then(function () {
-          that.$emit("guardar");
-        });
-    },
-    editarReserva() {
-      const data = {
-        id: this.selectedMateriaId,
-        fh_desde: `${this.fechaDesde} `,
-        fh_hasta: `${this.fechaHasta} `,
-      };
-      var that = this;
-      this.axios
-        .patch(`/apiv1/materias/${this.materias.id}`, data)
-        .then(function (response) {
-          console.log(response);
-          /* alert("Registro Guardado!!"); */
-          that.id = "";
-          that.fechaDesde = "";
-          that.fechaHasta = "";
+          that.reiniciarValores();
+          that.resetValidationForAbm();
         })
         .catch(function (error) {
           console.log(error);
@@ -199,7 +214,33 @@ export default {
           console.error(error);
         });
     },
+    getHorarioMaterias() {
+      const id_materia = this.selectedMateriaId;
+      const fh_desde = `${this.fechaDesde} 00:00:00`;
+      const fh_hasta = `${this.fechaHasta} 23:59:59`;
+      var that = this;
+      this.axios
+        .get(`/apiv1/horariomateria/obtenerporfecha?id_materia=${id_materia}&fh_desde=${fh_desde}&fh_hasta=${fh_hasta}`)
+        .then((response) => {
+          that.horarioMateria = response.data
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    },
+    reiniciarValores() {
+      this.selectedMateriaId = null;
+      this.selectedAulaId = null;
+      this.horarioMateria = [];
+      this.fechaDesde = '';
+      this.fechaHasta = '';
+    },
+    resetValidationForAbm() {
+      this.$refs.form.resetValidation();
+    },
     cancelar() {
+      this.reiniciarValores();
+      this.resetValidationForAbm();
       this.$emit("cancelar");
     },
   },
@@ -207,8 +248,5 @@ export default {
     this.getMaterias();
     this.getAulas();
   },
-  /*   beforeDestroy() {
-    this.nuevoNombre = "";
-  }, */
 };
 </script>
