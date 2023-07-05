@@ -22,7 +22,7 @@
         <v-icon small class="mr-2" @click="editarCarrera(item)">
           mdi-pencil
         </v-icon>
-        <v-icon small @click="eliminarCarrera(item)"> mdi-delete </v-icon>
+        <v-icon small @click="mostrarConfirmacionEliminar(item)"> mdi-delete </v-icon>
       </template>
     </v-data-table>
 
@@ -34,15 +34,26 @@
         @cancelar="cancelarAbmCarrera"
       />
     </v-dialog>
+
+    <v-dialog v-model="mostrarConfirmDialog" max-width="320px" persistent>
+      <ConfirmDialog
+        :id="carreraSeleccionada.id"
+        @confirmar="eliminarCarrera(carreraSeleccionada)"
+        @cancelar="mostrarConfirmDialog = false"
+      />
+    </v-dialog>
+
   </div>
 </template>
 
 <script>
 import AbmCarreras from "./AbmCarreras.vue";
+import ConfirmDialog from "./ConfirmDialog.vue"
 export default {
   components: {
     AbmCarreras,
-  },
+    ConfirmDialog
+},
   data() {
     return {
       cantTotalListadoCarreras: 0,
@@ -59,10 +70,11 @@ export default {
       listadoCarreras: [],
       mostrarAbmCarreras: false,
       carreraSeleccionada: {
-        id:"",
+        id:0,
         nombre:"",
       },
       editar: false,
+      mostrarConfirmDialog: false,
     };
   },
   watch: {
@@ -106,7 +118,7 @@ export default {
     agregarCarrera() {
       this.editar = false;
       this.carreraSeleccionada = {
-        id: "",
+        id: 0,
         nombre: "",
       };
       this.mostrarFormularioAbmCarreras();
@@ -130,20 +142,24 @@ export default {
         .delete(`/apiv1/carrera/${carrera.id}`)
         .then(function (response) {
           console.log(response);
-          alert("Registro Eliminado!!");
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
+          that.mostrarConfirmDialog = false;
           that.obtenerListadoDeApi();
         });
     },
     cancelarAbmCarrera() {
       this.carreraSeleccionada.nombre = "";
-      this.carreraSeleccionada.id = "";
+      this.carreraSeleccionada.id = 0;
       this.mostrarAbmCarreras = false;
     },
+    mostrarConfirmacionEliminar(carrera) {
+    this.carreraSeleccionada = carrera;
+    this.mostrarConfirmDialog = true;
+  },
   },
 };
 </script>
