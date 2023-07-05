@@ -18,7 +18,7 @@
             </v-btn>
             <v-spacer></v-spacer>
             <v-btn
-              color="secundary"
+              color="secondary"
               @click="cancelar"
             >
               Cancelar
