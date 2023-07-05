@@ -24,7 +24,7 @@
         <v-icon small class="mr-2" @click="editarHorarioMateria(item)">
           mdi-pencil
         </v-icon>
-        <v-icon small @click="eliminarHorarioMateria(item)">
+        <v-icon small @click="mostrarConfirmacionEliminar(item)">
           mdi-delete
         </v-icon>
       </template>
@@ -45,16 +45,26 @@
         @cancelar="cancelarAbmEdicion"
       />
     </v-dialog>
+
+    <v-dialog v-model="mostrarConfirmDialog" max-width="320px" persistent>
+      <ConfirmDialog
+        :id="horarioMateriaSeleccionada.id"
+        @confirmar="eliminarHorarioMateria(horarioMateriaSeleccionada)"
+        @cancelar="mostrarConfirmDialog = false"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import AbmHorarioMateria from "./AbmHorarioMateria.vue";
 import AbmEdicionHorarioMateria from "./AbmEdicionHorarioMateria.vue";
+import ConfirmDialog from "./ConfirmDialog.vue"
 export default {
   components: {
     AbmHorarioMateria,
     AbmEdicionHorarioMateria,
+    ConfirmDialog
   },
   data() {
     return {
@@ -79,6 +89,7 @@ export default {
       horarioMateriaSeleccionada: {},
       materiaSeleccionada: {},
       editar: false,
+      mostrarConfirmDialog: false,
     };
   },
   watch: {
@@ -150,18 +161,18 @@ export default {
       this.mostrarAbm = false;
       this.obtenerListadoDeApi();
     },
-    eliminarHorarioMateria(carrera) {
+    eliminarHorarioMateria(horarioMateria) {
       var that = this;
       this.axios
-        .delete(`/apiv1/horariomateria/${carrera.id}`)
+        .delete(`/apiv1/horariomateria/${horarioMateria.id}`)
         .then(function (response) {
           console.log(response);
-          alert("Registro Eliminado!!");
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
+          that.mostrarConfirmDialog = false;
           that.obtenerListadoDeApi();
         });
     },
@@ -175,6 +186,10 @@ export default {
       console.log("Horario Materia actualizado con exito!");
       this.mostrarAbmEdicion = false;
       this.obtenerListadoDeApi();
+    },
+    mostrarConfirmacionEliminar(item) {
+    this.horarioMateriaSeleccionada = item;
+    this.mostrarConfirmDialog = true;
     },
   },
 };
