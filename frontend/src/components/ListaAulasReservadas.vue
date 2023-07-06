@@ -26,7 +26,11 @@
         <v-icon small class="mr-2" @click="editarReserva(item)">
           mdi-pencil
         </v-icon>
-        <v-icon small @click="eliminarReserva(item)"> mdi-delete </v-icon>
+        <v-icon small @click="mostrarConfirmacionEliminar(item)">
+          mdi-delete
+        </v-icon>
+
+        <!-- <v-icon small @click="eliminarReserva(item)"> mdi-delete </v-icon> -->
       </template>
     </v-data-table>
 
@@ -47,16 +51,27 @@
         @cancelar="cancelarAbmReservaMateria"
       />
     </v-dialog>
+
+    <v-dialog v-model="mostrarConfirmDialog" max-width="320px" persistent>
+      <ConfirmDialog
+        :id="reservaSeleccionada.id"
+        @confirmar="eliminarReserva(reservaSeleccionada)"
+        @cancelar="mostrarConfirmDialog = false"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import AbmReservaAula from "./AbmReservaAula.vue";
 import AbmReservaMateria from "./AbmReservaMateria.vue";
+import ConfirmDialog from "./ConfirmDialog.vue";
+
 export default {
   components: {
     AbmReservaAula,
     AbmReservaMateria,
+    ConfirmDialog,
   },
   data() {
     return {
@@ -81,6 +96,7 @@ export default {
       reservaSeleccionada: {},
       materiaSeleccionada: {},
       editar: false,
+      mostrarConfirmDialog: false,
     };
   },
   watch: {
@@ -162,12 +178,12 @@ export default {
         .delete(`/apiv1/reservaaula/${reservaaula.id}`)
         .then(function (response) {
           console.log(response);
-          alert("Registro Eliminado!!");
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
+          that.mostrarConfirmDialog = false;
           that.obtenerListadoDeApi();
         });
     },
@@ -182,6 +198,10 @@ export default {
     },
     cancelarAbmReservaMateria() {
       this.mostrarAbmReservaMateria = false;
+    },
+    mostrarConfirmacionEliminar(reservaaula) {
+      this.reservaSeleccionada = reservaaula;
+      this.mostrarConfirmDialog = true;
     },
   },
 };
