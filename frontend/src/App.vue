@@ -1,12 +1,9 @@
 <template>
   <v-app>
-    <AulasLogin v-if="!$store.state.loggedIn">
-    </AulasLogin>
-    <MainMenu v-if="$store.state.loggedIn"
-    ></MainMenu>
-    <MainBar v-if="$store.state.loggedIn"
-    ></MainBar>
-    <v-main>
+    <AulasLogin v-if="!$store.state.loggedIn"> </AulasLogin>
+    <MainMenu v-if="$store.state.loggedIn"></MainMenu>
+    <MainBar v-if="$store.state.loggedIn"></MainBar>
+    <v-main v-if="$store.state.loggedIn">
       <v-container fluid> <router-view /> </v-container>
     </v-main>
   </v-app>
@@ -15,8 +12,7 @@
 <script>
 import MainMenu from "./components/MainMenu.vue";
 import MainBar from "./components/MainBar.vue";
-import AulasLogin from './components/AulasLogin.vue';
-
+import AulasLogin from "./components/AulasLogin.vue";
 export default {
   name: "App",
 

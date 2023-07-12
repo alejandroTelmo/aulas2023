@@ -2,14 +2,14 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import AulasHome from "../components/AulasHome";
 import AulasAbout from "../components/AulasAbout";
-import ListadoCarreras from "../components/ListadoCarreras"
-import ListadoAulas from "../components/ListadoAulas"
-import ListaAulasReservadas from "../components/ListaAulasReservadas.vue"
-import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias"
-import ListadoMaterias from "../components/ListadoMaterias"
+import ListadoCarreras from "../components/ListadoCarreras";
+import ListadoAulas from "../components/ListadoAulas";
+import ListaAulasReservadas from "../components/ListaAulasReservadas.vue";
+import ListadoHorarioMaterias from "../components/ListadoHorarioMaterias";
+import ListadoMaterias from "../components/ListadoMaterias";
 import ListadoProfesor from "../components/ListadoProfesor";
-import CalendarioReservasAulas from "../components/CalendarioReservasAulas"
-
+import CalendarioReservasAulas from "../components/CalendarioReservasAulas";
+import ChangePassword from "../components/ChangePassword.vue";
 Vue.use(VueRouter);
 
 const routes = [
@@ -48,7 +48,7 @@ const routes = [
     name: "ListadoMaterias",
     component: ListadoMaterias,
   },
-  {  
+  {
     path: "/profesor",
     name: "ListadoProfesor",
     component: ListadoProfesor,
@@ -57,6 +57,11 @@ const routes = [
     path: "/calendario",
     name: "CalendarioReservasAulas",
     component: CalendarioReservasAulas,
+  },
+  {
+    path: "/changePasswordUser",
+    name: "ChangePassword",
+    component: ChangePassword,
   },
 ];
 

@@ -10,7 +10,6 @@ import { RouterLink } from "vue-router";
 
 export default {
   name: "AulasHome",
-
   components: { RouterLink },
 };
 </script>
