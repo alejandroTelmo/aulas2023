@@ -27,13 +27,20 @@
           <v-btn
             align-self="center"
             color="primary"
-            @click="$store.dispatch('loginAttempt')"
+            @click="ingresar"
             :disabled="!valid"
             >Ingresar
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="timeout"
+      color="red darken-2"
+    >
+      {{ snackbarText }}
+    </v-snackbar>
   </div>
 </template>
 
@@ -46,10 +53,34 @@ export default {
     mostrarContrasenia: false,
     usuarioRules: [(v) => !!v || "El usuario es obligatorio"],
     contraseniaRules: [(v) => !!v || "La contraseña es obligatoria"],
+    snackbar: false,
+    snackbarText: '',
+    timeout: 4000,
   }),
   methods: {
     ingresar() {
-      this.$store.dispatch("loginAttempt");
+      const data = {
+        username: this.usuario,
+        passwd: this.contrasenia
+      };
+      var that = this;
+      this.axios
+        .post("/auth/login", data)
+        .then(function (response) {
+          if (response.status === 200){
+            that.$store.dispatch('loginAttempt', response.data)
+          }
+        })
+        .catch(function (error) {
+          if (error.response.status === 401){
+            that.snackbarText = 'Credenciales ingresadas incorrectas';
+          } else {
+            that.snackbarText = 'Ocurrio un Error'
+          }
+          that.snackbar = true;
+        })
+        .then(function () {
+        });
     },
   },
 };
