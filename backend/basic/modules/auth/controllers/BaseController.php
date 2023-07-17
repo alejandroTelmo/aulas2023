@@ -2,13 +2,10 @@
 
 namespace app\modules\auth\controllers;
 
-use yii\web\Controller;
-use yii\web\Response;
-use yii\filters\ContentNegotiator;
 use yii\filters\Cors;
+use yii\rest\ActiveController;
 
-
-class BaseController extends Controller
+class BaseController extends ActiveController
 {
     public static function allowedDomains()
     {

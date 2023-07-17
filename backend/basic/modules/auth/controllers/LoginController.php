@@ -10,9 +10,18 @@ use app\models\User;
  */
 class LoginController extends BaseController
 {
-   
+    public $modelClass = 'app\models\User';
+
+    public function actions()
+    {
+        $actions = parent::actions();
+
+        unset($actions['create']);
+
+        return $actions;
+    }
  
-    public function actionIndex()
+    public function actionCreate()
     {
         $request=Yii::$app->request;
 
