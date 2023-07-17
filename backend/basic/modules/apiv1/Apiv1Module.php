@@ -19,14 +19,26 @@ class Apiv1Module extends \yii\base\Module
     {
         parent::init();
         \Yii::$app->user->enableSession = false;
-        // custom initialization code goes here
     }
+
     public function behaviors()
-{
+    {
     $behaviors = parent::behaviors();
     $behaviors['authenticator'] = [
         'class' => HttpBearerAuth::class,
     ];
+
+    $auth = $behaviors['authenticator'];
+    unset($behaviors['authenticator']);
+    
+    $behaviors['corsFilter'] = [
+        'class' => \yii\filters\Cors::class,
+    ];
+    
+    $behaviors['authenticator'] = $auth;
+
+    $behaviors['authenticator']['except'] = ['options'];
+
     return $behaviors;
-}
+    }
 }

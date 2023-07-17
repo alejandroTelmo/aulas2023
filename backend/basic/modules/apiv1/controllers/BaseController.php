@@ -17,18 +17,20 @@ class BaseController extends ActiveController
     {
         $behaviors = parent::behaviors();
 
-        return array_merge($behaviors, [
+        array_merge($behaviors, [
             'corsFilter' => [
                 'class' => Cors::class,
                 'cors' => [
-                    'Origin' => static::allowedDomains(),
-                    'Access-Control-Request-Method' => ['POST', 'GET', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+                   'Origin' => static::allowedDomains(),
+/*                      'Access-Control-Request-Method' => ['POST', 'PUT', 'PATCH', 'DELETE'],
                     'Access-Control-Allow-Credentials' => true,
                     'Access-Control-Max-Age' => 3600,
-                    'Access-Control-Allow-Headers' => ['authorization', 'X-Requested-With', 'content-type'],
+                    
+                    'Access-Control-Allow-Headers' => ['authorization', 'X-Requested-With', 'content-type'],*/
                     'Access-Control-Expose-Headers' => ['X-Pagination-Current-Page', 'X-Pagination-Page-Count', 'X-Pagination-Total-Count']
                 ]
             ]
         ]);
+        return $behaviors;
     }
 }
