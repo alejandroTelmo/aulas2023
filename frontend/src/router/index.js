@@ -10,6 +10,8 @@ import ListadoMaterias from "../components/ListadoMaterias";
 import ListadoProfesor from "../components/ListadoProfesor";
 import CalendarioReservasAulas from "../components/CalendarioReservasAulas";
 import ChangePassword from "../components/ChangePassword.vue";
+import store from "../plugins/store";
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -70,5 +72,13 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes,
 });
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(route => route.path) && !store.state.loggedIn) {
+    next('/')
+  } else {
+    next()
+  }
+})
 
 export default router;
