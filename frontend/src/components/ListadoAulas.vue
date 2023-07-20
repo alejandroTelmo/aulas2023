@@ -22,7 +22,7 @@
           <v-icon small class="mr-2" @click="editarAula(item)">
             mdi-pencil
           </v-icon>
-          <v-icon small @click="eliminarAula(item)"> mdi-delete </v-icon>
+          <v-icon small @click="mostrarConfirmacionEliminar(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
   
@@ -34,15 +34,26 @@
           @cancelar="cancelarAbmAula"
         />
       </v-dialog>
+
+      <v-dialog v-model="mostrarConfirmDialog" max-width="320px" persistent>
+      <ConfirmDialog
+        :id="aulaSeleccionada.id"
+        @confirmar="eliminarAula(aulaSeleccionada)"
+        @cancelar="mostrarConfirmDialog = false"
+      />
+    </v-dialog>
+
     </div>
   </template>
   
   <script>
   import AbmAulas from "./AbmAulas.vue";
+  import ConfirmDialog from "./ConfirmDialog.vue";
   export default {
     components: {
-      AbmAulas,
-    },
+    AbmAulas,
+    ConfirmDialog
+},
     data() {
       return {
         cantTotalListadoAulas: 0,
@@ -63,8 +74,17 @@
         },
         listadoAulas: [],
         mostrarAbmAula: false,
-        aulaSeleccionada: {},
+        aulaSeleccionada: {
+          id:0,
+          descripcion: "",
+          ubicacion: "",
+          cant_pcs: 0,
+          cant_proyectores: 0,
+          es_climatizada: false,
+          aforo: 0,
+        },
         editar: false,
+        mostrarConfirmDialog: false,
       };
     },
     watch: {
@@ -133,17 +153,17 @@
       eliminarAula(aula) {
         var that = this;
         this.axios
-          .delete(`/apiv1/aula/${aula.id}`)
-          .then(function (response) {
-            console.log(response);
-            alert("Registro Eliminado!!");
-          })
-          .catch(function (error) {
-            console.log(error);
-          })
-          .then(function () {
-            that.obtenerListadoDeApi();
-          });
+        .delete(`/apiv1/aula/${aula.id}`)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .then(function () {
+          that.mostrarConfirmDialog = false;
+          that.obtenerListadoDeApi();
+        });
       },
       cancelarAbmAula() {
         this.mostrarAbmAula = false;
@@ -156,6 +176,10 @@
         this.aulaSeleccionada.aforo = "";
 
       },
+      mostrarConfirmacionEliminar(aula) {
+      this.aulaSeleccionada = aula;
+      this.mostrarConfirmDialog = true;
     },
+  },
   };
   </script>
