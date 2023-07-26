@@ -17,7 +17,7 @@ services:
             PGADMIN_DEFAULT_EMAIL: "ale@admin.com"
             PGADMIN_DEFAULT_PASSWORD: "admin"
         ports:
-            - 80:80   
+            - 9000:80   
         depends_on:
             - postgres  
     backend:
@@ -33,15 +33,28 @@ services:
             PHP_USER_ID: ${USER_UNIX_ID}
             ENABLE_GIT: 1
             PRODUCCION: 0
-        ports: 
-            - 8000:80
+        #ports:
+        #    - 8000:80
 
     frontend:
         build:
             context: .
             target: 'develop-stage'
-        ports:
-            - '8080:8080'
+        #ports:
+        #    - '8080:8080'
         volumes:
             - './frontend:/app'
         command: /bin/sh -c "npm run serve"
+        
+    
+    nginx:
+        image: nginx:1.15
+        restart: on-failure
+        ports:
+            - "80:8000"
+            - "443:8001"
+        volumes:
+            - ./config/nginx:/etc/nginx/conf.d
+            #- ./data/admin:/static/admin
+        depends_on:
+            - "backend"
