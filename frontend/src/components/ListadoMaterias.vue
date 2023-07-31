@@ -22,7 +22,7 @@
         <v-icon small class="mr-2" @click="editarMateria(item)">
           mdi-pencil
         </v-icon>
-        <v-icon small @click="eliminarMateria(item)">mdi-delete</v-icon>
+        <v-icon small @click="mostrarConfirmacionEliminar(item)">mdi-delete</v-icon>
       </template>
     </v-data-table>
 
@@ -34,14 +34,25 @@
         @cancelar="cancelarAbmMateria"
       />
     </v-dialog>
+
+    <v-dialog v-model="mostrarConfirmDialog" max-width="320px" persistent>
+      <ConfirmDialog
+        :id="materiaSeleccionada.id"
+        @confirmar="eliminarMateria(materiaSeleccionada)"
+        @cancelar="mostrarConfirmDialog = false"
+      />
+    </v-dialog>
   </div>
 </template>
 
 <script>
 import AbmMateria from "./AbmMateria.vue";
+import ConfirmDialog from "./ConfirmDialog.vue"
 export default {
   components: {
     AbmMateria,
+    ConfirmDialog
+    
   },
   data() {
     return {
@@ -63,6 +74,7 @@ export default {
       mostrarAbmMaterias: false,
       materiaSeleccionada: {},
       editar: false,
+      mostrarConfirmDialog: false,
     };
   },
   watch: {
@@ -160,19 +172,23 @@ export default {
         .delete(`/apiv1/materia/${materia.id}`)
         .then(function (response) {
           console.log(response);
-          alert("Registro Eliminado!!");
         })
         .catch(function (error) {
           console.log(error);
         })
         .then(function () {
+          that.mostrarConfirmDialog = false;
           that.obtenerListadoDeApi();
         });
     },
     cancelarAbmMateria() {
       this.mostrarAbmMaterias = false;
       this.materiaSeleccionada.nombre = "";
-      this.materiaSeleccionada.id = "";
+      this.materiaSeleccionada.id = 0;
+    },
+    mostrarConfirmacionEliminar(materia) {
+      this.materiaSeleccionada = materia;
+      this.mostrarConfirmDialog = true;
     },
   },
 };

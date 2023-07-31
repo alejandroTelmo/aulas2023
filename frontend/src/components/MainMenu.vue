@@ -38,7 +38,6 @@ export default {
   data: () => ({
     items: [
       { title: "Home", icon: "mdi-view-dashboard", to: "/home" },
-      { title: "About", icon: "mdi-view-dashboard", to: "/about" },
       { title: "Carreras", icon: "mdi-list-box-outline", to: "/carreras" },
       { title: "Profesor", icon: "mdi-list-box-outline", to: "/profesor" },
       { title: "Materias", icon: "mdi-list-box-outline", to: "/materias" },
@@ -46,6 +45,7 @@ export default {
       { title: "Horario Materias", icon: "mdi-list-box-outline", to: "/horarioMaterias" },
       { title: "Reservas", icon: "mdi-list-box-outline", to: "/reservaaula" },
       { title: "Calendario", icon: "mdi-calendar-month", to: "/calendario" },
+      /* { title: "About", icon: "mdi-view-dashboard", to: "/about" }, */
     ],
   }),
   mounted() {},

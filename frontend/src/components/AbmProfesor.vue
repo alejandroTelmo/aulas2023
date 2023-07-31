@@ -5,18 +5,19 @@
         <v-card-text>
             <v-text-field  
             v-model="nombre"
-            label="nombre"
+            label="Nombre"
             :rules="nombreRules"
             ></v-text-field>
             <v-text-field  
             v-model="apellido"           
-            label="apellido"
+            label="Apellido"
             :rules="apellidoRules"
             required
           ></v-text-field>
           <v-text-field  
             v-model="mostrar"
-            label="texto a mostrar"
+            label="Texto a mostrar"
+            :rules="mostrarRules"
              ></v-text-field>
         </v-card-text>
       <v-card-actions>
@@ -50,8 +51,8 @@
         apellido:"",
         mostrar:"",
         profesorLocal: null,
-        idRules: [
-          v => !!v || 'El ID  es requerido',
+        mostrarRules: [
+          v => !!v || 'Texto a mostrar es requerido',
         ],
         nombreRules: [
           v => !!v || 'El nombre es requerido',
@@ -72,7 +73,7 @@
       setearValores(){
             if(this.editar){
                 this.id = this.profesor.id
-                this.nombre = this.profesornombre
+                this.nombre = this.profesor.nombre
                 this.apellido = this.profesor.apellido
                 this.mostrar =this.profesor.mostrar
                 
@@ -144,6 +145,7 @@
       limpiarCampos(){
             this.nombre= "";
             this.apellido = "";
+            this.mostrar = "";
              }
     },
     

@@ -20,7 +20,7 @@
           label="Seleccionar Profesor"
           v-model="selectedProfesorId"
           :items="profesores"
-          item-text="apellido"
+          item-text="mostrar"
           item-value="id"
           ></v-select>
         <v-select
@@ -159,7 +159,7 @@ export default {
         .then(response => {
           console.log(response.data);
           that.profesores = response.data.map(profesor => {
-            return { id: profesor.id, apellido: profesor.apellido };
+            return { id: profesor.id, apellido: profesor.apellido, mostrar:profesor.mostrar };
           });
           
         })
@@ -185,12 +185,14 @@ export default {
     },
   },
   created() {
-  this.nombreMateria = this.materia.nombre;
-  this.cant_alumnos = this.materia.cant_alumnos;
-  this.selectedCarreraId = this.materia.id_carrera;
-  this.selectedProfesorId = this.materia.id_profesor;
-  this.getProfesores();
-  this.getCarreras();
+    if(this.materia){
+      this.nombreMateria = this.materia.nombre;
+      this.cant_alumnos = this.materia.cant_alumnos;
+      this.selectedCarreraId = this.materia.id_carrera;
+      this.selectedProfesorId = this.materia.id_profesor;
+    }
+    this.getProfesores();
+    this.getCarreras();
   },
   
 };

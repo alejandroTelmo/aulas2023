@@ -12,7 +12,7 @@
       >
         <template v-slot:top>
           <v-toolbar flat>
-            <v-toolbar-title>Listado Profesor</v-toolbar-title>
+            <v-toolbar-title>Listado Profesores</v-toolbar-title>
             <v-divider class="mx-4" inset vertical></v-divider>
             <v-spacer></v-spacer>
             <v-btn color="primary" @click="agregarProfesor">Agregar Profesor</v-btn>
@@ -22,7 +22,7 @@
           <v-icon small class="mr-2" @click="editarProfesor(item)">
             mdi-pencil
           </v-icon>
-          <v-icon small @click="eliminarProfesor(item)"> mdi-delete </v-icon>
+          <v-icon small @click="mostrarConfirmacionEliminar(item)"> mdi-delete </v-icon>
         </template>
       </v-data-table>
   
@@ -34,14 +34,25 @@
           @cancelar="cancelarAbmProfesor"
         />
       </v-dialog>
+
+      <v-dialog v-model="mostrarConfirmDialog" max-width="320px" persistent>
+      <ConfirmDialog
+        :id="profesorSeleccionada.id"
+        @confirmar="eliminarProfesor(profesorSeleccionada)"
+        @cancelar="mostrarConfirmDialog = false"
+      />
+    </v-dialog>
+
     </div>
   </template>
   
   <script>
   import AbmProfesor from "./AbmProfesor.vue";
+  import ConfirmDialog from "./ConfirmDialog.vue"
   export default {
     components: {
       AbmProfesor,
+      ConfirmDialog
     },
     data() {
       return {
@@ -49,10 +60,10 @@
         loading: true,
         options: {},
         headers: [
-          { text: "id", value: "id" },
-          { text: "nombre", value: "nombre" },
-          { text: "apellido", value: "apellido" },
-          { text: "mostrar", value: "mostrar" },
+          { text: "ID", value: "id" },
+          { text: "Nombre", value: "nombre" },
+          { text: "Apellido", value: "apellido" },
+          { text: "Texto a mostrar", value: "mostrar" },
           { text: "Acciones", value: "actions", sortable: false },
         ],
         footerProps:{
@@ -62,6 +73,7 @@
         mostrarAbmProfesor: false,
         profesorSeleccionada: {},
         editar: false,
+        mostrarConfirmDialog: false,
       };
     },
     watch: {
@@ -130,20 +142,24 @@
           .delete(`/apiv1/profesor/${profesor.id}`)
           .then(function (response) {
             console.log(response);
-            alert("Registro Eliminado!!");
           })
           .catch(function (error) {
             console.log(error);
           })
           .then(function () {
+            that.mostrarConfirmDialog = false;
             that.obtenerListadoDeApi();
           });
       },
       cancelarAbmProfesor() {
         this.mostrarAbmProfesor = false;
-        this.profesorSeleccionada.id = "";
+        this.profesorSeleccionada.id = 0;
         this.profesorSeleccionada.nombre = "";
         this.profesorSeleccionada.apellido = "";
+      },
+      mostrarConfirmacionEliminar(profesor) {
+        this.profesorSeleccionada = profesor;
+        this.mostrarConfirmDialog = true;
       },
     },
   };
